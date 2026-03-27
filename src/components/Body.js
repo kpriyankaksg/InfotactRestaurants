@@ -1,8 +1,14 @@
-
+import { Outlet } from "react-router-dom";
+import Head from "./Head";
+import Sidemenu from "./Sidemenu";
 const Body=()=>{
   return(
-    <div>
-      <h2>Body</h2>
+    <div className="flex flex-col">
+     <Head />
+     <div  style={{ display: "grid", gridTemplateColumns: "auto 1fr" }}>
+     <Sidemenu />
+     <Outlet />
+     </div>
     </div>
   )
 }

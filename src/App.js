@@ -1,10 +1,17 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
+import { Provider, useSelector } from 'react-redux';
+import { Navigate } from "react-router-dom";
 import './App.css';
+import AboutUs from './components/AboutUs';
 import Body from './components/Body';
+import ContactUs from './components/ContactUs';
 import Login from './components/Login';
+import MainContainer from './components/MainContainer';
 import Profile from "./components/Profile";
 import Register from "./components/Register";
+import appStore from './utils/appStore';
+
 // import axios from 'axios';
 
 
@@ -25,6 +32,11 @@ function App() {
 //     console.error('Error fetching users:', error);
 //   }
 // };
+const ProtectedRoute = ({ children }) => {
+  const user = useSelector((appStore) => appStore.user.user);
+  return user ? children : <Navigate to="/" />;
+};
+
 
 const appRouter= createBrowserRouter([
   {
@@ -36,23 +48,45 @@ const appRouter= createBrowserRouter([
     element:<Register />
   },
   {
-    path:"/profile",
-    element: <Profile />
-  },
-   {
     path:"/body",
-    element: <Body />
+    element:(
+      <ProtectedRoute >
+         <Body />
+      </ProtectedRoute>
+    ),
+    children:[
+      {
+        path:"mainContainer",
+        element:<MainContainer/>
+      },
+      {
+        path:"profile",
+        element: <Profile />
+      },
+      {
+        path:"contactUs",
+        element:<ContactUs />
+      },
+      {
+        path:"aboutUs",
+        element:<AboutUs />
+      }
+    ]
   }
+  
   
 ]
 
 )
 
   return (
-    <RouterProvider router={appRouter} />
+    <Provider store={appStore}>
+    <div>
+     <RouterProvider router={appRouter} />
+    </div>
+    </Provider>
     
   )
-
 
 }
 

@@ -1,4 +1,22 @@
 # Getting Started with Create React App
+1.created the Project with Restaurants Name.
+2.Installed the TailwindCSS.
+3.Created the MongoDB Atlas Cluster and connected with React.js 
+4.Established secure connections and environment variables.
+5.Designed the NoSQL schemas for Users, Restaurants(with geoJSON), MenuItems.
+6.Design and Developed the User Singn Up and Sign In pages with API's.
+7.Developed the authentication layer utilizing JWT Token.
+8.Finally developing the application using Node, express, cors, axios, Mongoose, React-router-dom.
+
+9.Given different sign up for both partner and customer in same page.
+10.Installed the Redux toolkit.
+11.Handle the sidemenu open/close by using menuSlice in redux.
+12.Fetch the user details and stored in userSlice.
+13.Utilized user details in Profile page and Successfully updated the profile.
+14.Designed the Dashboard with fixed header and sideMenu.
+15.Developed the logout functionality by clearing the userDetails.
+
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 

@@ -1,12 +1,15 @@
 import axios from 'axios';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
 import { BackGround_IMG_URL } from "../utils/constants";
+import { setUser } from "../utils/userSlice";
 
 const Login=()=>{
   const [email, setEmail]= useState("");
   const [password, setPassword]= useState("");
   const navigate= useNavigate();
+  const dispatch= useDispatch();
 
   const handleSubmit=async (e)=>{
         e.preventDefault();
@@ -17,11 +20,16 @@ const Login=()=>{
          
           console.log(response.data);
           const result= response.data;
+          dispatch(setUser(result));
+          
+          localStorage.setItem("useName",result.user.name);
+          localStorage.setItem("useEmail",result.user.email);
+          localStorage.setItem("useEmail",result.user.role);
           if(result.token){
             console.log("entered into token");
             localStorage.setItem("token", result.token);
             alert("Login Successfully.")
-            navigate("/body");
+            navigate("/body/mainContainer");
           }
           else{
             console.log("entered into else");
