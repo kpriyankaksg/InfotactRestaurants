@@ -1,4 +1,7 @@
 # Getting Started with Create React App
+Project 2: Integrated Food Delivery and Dine-Out
+Hospitality Platform
+
 1.created the Project with Restaurants Name.
 2.Installed the TailwindCSS.
 3.Created the MongoDB Atlas Cluster and connected with React.js 
@@ -15,6 +18,10 @@
 13.Utilized user details in Profile page and Successfully updated the profile.
 14.Designed the Dashboard with fixed header and sideMenu.
 15.Developed the logout functionality by clearing the userDetails.
+
+16.Given styles to the sign up and sign In
+17.Created the Partner dashboard.
+18.Partner dashboard is designed to add the Restaurant details, Menu Items, seating arrangement.
 
 
 

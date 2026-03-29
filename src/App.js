@@ -8,6 +8,7 @@ import Body from './components/Body';
 import ContactUs from './components/ContactUs';
 import Login from './components/Login';
 import MainContainer from './components/MainContainer';
+import Menu from './components/Menu';
 import Profile from "./components/Profile";
 import Register from "./components/Register";
 import appStore from './utils/appStore';
@@ -70,6 +71,10 @@ const appRouter= createBrowserRouter([
       {
         path:"aboutUs",
         element:<AboutUs />
+      },
+       {
+        path:"menu",
+        element:<Menu />
       }
     ]
   }

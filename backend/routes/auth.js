@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/Users");
+const MenuItemsList= require("../models/menuItemsList")
 
 const router = express.Router();
 
@@ -28,8 +29,6 @@ router.post("/register", async (req, res) => {
 });
 
 // Login
-
-
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try{
@@ -56,6 +55,20 @@ router.post("/login", async (req, res) => {
 
   }
   
+});
+
+// MenuItemsList
+router.post("/MenuItemsList", async (req, res) => {
+  const {category, itemName, price,image,available} = req.body;
+  console.log(req.body);
+  try {
+    const newItem = new MenuItemsList({category, itemName, price, image,available });
+    console.log(newItem);
+    await newItem.save();
+    res.status(201).json({ message: "New Item added successfully" });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
 
 // Middleware

@@ -1,2 +1,2 @@
 
-export const BackGround_IMG_URL="https://img.freepik.com/premium-vector/vector-gray-food-background1_733406-3095.jpg"
+export const BackGround_IMG_URL="https://copilot.microsoft.com/th/id/BCO.a07df846-5b42-4c3d-b24c-c1ac5733313f.png"

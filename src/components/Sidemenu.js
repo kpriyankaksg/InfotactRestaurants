@@ -5,6 +5,7 @@ import { clearUser } from "../utils/userSlice";
 const Sidemenu=()=>{
   const dispatch=useDispatch();
   const navigate=useNavigate();
+  const userDetails= useSelector((appStore)=> appStore.user.user);
 const isMenuOpen= useSelector((appStore)=>appStore.menu.isMenuOpen);
 if(!isMenuOpen) return null;
 
@@ -15,19 +16,72 @@ const handleLogout=()=>{
    navigate("/");
 
 }
-  return(
-    <div className="p-5 shadow-lg w-56 h-screen">
-      <ul className="space-y-10">
-        <li className="text-lg"><Link to="mainContainer">🏠 Home</Link></li>
-        <li className="text-lg">📋 Orders</li>
-        <li className="text-lg"><Link to="profile">👤 Profile</Link> </li>
-        <li className="text-lg"><Link to="aboutUs">📱 About Us</Link></li>
-        <li className="text-lg"><Link to="contactUs">☎️ Contact Us</Link></li>
-        <li className="text-lg cursor-pointer" onClick={handleLogout}>🔒 Logout</li>
-      </ul>
-    </div>
-  )
+ return (
+    <aside
+  className={`fixed top-0 left-0 h-screen w-64 bg-gradient-to-b from-red-700 via-orange-600 to-yellow-500 text-white shadow-2xl z-40 transform transition-transform duration-300 ease-in-out
+    ${isMenuOpen ? "translate-x-0" : "-translate-x-full"} 
+    md:translate-x-0`}>
   
- 
-}
+
+      <div className="p-6 py-4 border-b border-white/30">
+        <h2 className="text-2xl font-extrabold tracking-wide">🍴 FoodHub</h2>
+      </div>
+      <ul className="space-y-6 mt-6 font-semibold">
+        <li>
+          <Link
+            to="mainContainer"
+            className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition"
+          >
+            <span>🏠</span> <span>Home</span>
+          </Link>
+        </li>
+        <li className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition">
+          <span>📋</span> <span>Orders</span>
+        </li>
+       
+        <li>
+         {userDetails?.user?.role === "Partner" ? (
+           <Link
+            to="menu"
+            className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition" >
+            <span>📱</span> <span>Menu</span>
+          </Link>
+        
+        ) : (
+           <Link
+            to="aboutUs"
+            className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition" >
+            <span>📱</span> <span>About Us</span>
+          </Link>
+        )}
+        </li>
+         <li>
+          <Link
+            to="profile"
+            className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition"
+          >
+            <span>👤</span> <span>Profile</span>
+          </Link>
+        </li>
+        
+        <li>
+          <Link
+            to="contactUs"
+            className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition"
+          >
+            <span>☎️</span> <span>Contact Us</span>
+          </Link>
+        </li>
+        <li
+          className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition cursor-pointer"
+          onClick={handleLogout}
+        >
+          <span>🔒</span> <span>Logout</span>
+        </li>
+      </ul>
+    </aside>
+  );
+};
+
+
 export default Sidemenu;

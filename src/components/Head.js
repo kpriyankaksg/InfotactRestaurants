@@ -18,40 +18,58 @@ const Head=()=>{
   }
 
 
+  return (
+    <header className="fixed top-0 left-0 w-full flex items-center justify-between px-6 py-3 bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 shadow-lg z-50">
+      {/* Logo + Title */}
+      <div className="flex items-center space-x-3">
+        <img
+          alt="logo"
+          className="w-10 h-10 cursor-pointer rounded-full border-2 border-white"
+          onClick={handleMenuClick}
+          src="https://as1.ftcdn.net/jpg/02/24/13/60/1000_F_224136032_b11na6zJLTpORSjfauRdpKamQDc7Uejv.jpg"
+        />
+       {/* <button
+        className="md:hidden p-2 text-red-600"
+        onClick={() => dispatch(toggleMenu())}
+         >
+         ☰
+        </button> */}
 
-
-  return(
-    <div id="root" className="flex p-4 m-2  bg-slate-100 shadow-lg">
-      <div className="grid grid-cols-4 flex flex-row">
-        <img alt="logo" className="w-8 h-10 cursor-pointer" onClick={handleMenuClick}
-     src="https://as1.ftcdn.net/jpg/02/24/13/60/1000_F_224136032_b11na6zJLTpORSjfauRdpKamQDc7Uejv.jpg" />
-     {userDetails?.user?.role === "Partner"? (<h1 className="text-red-600 font-bold text-xl">{userDetails.user.restaurantName}</h1>):(
-      <h1 className="text-red-600 font-bold text-2xl">The Food Hub</h1>
-     ) }
+        {userDetails?.user?.role === "Partner" ? (
+          <h1 className="text-white font-extrabold text-xl drop-shadow-md">
+            {userDetails.user.restaurantName}
+          </h1>
+        ) : (
+          <h1 className="text-white font-extrabold text-2xl drop-shadow-md">
+           🍴 FoodHub
+          </h1>
+        )}
       </div>
 
-      <div className="grid-cols-8 flex justify-end ">
-        <ul className="flex space-x-10  px-60">
-         <li>
-             <Link to="mainContainer" className="font-bold text-md cursor-pointer">Home</Link>
+      {/* Navigation */}
+      <nav>
+        <ul className="flex space-x-10 text-white font-semibold">
+          <li>
+            <Link to="mainContainer" className="hover:text-yellow-200 transition">Home</Link>
           </li>
           <li>
-             <Link to="aboutUs" className="font-bold text-md cursor-pointer">About Us</Link>
+            <Link to="aboutUs" className="hover:text-yellow-200 transition">About Us</Link>
           </li>
           <li>
-             <Link to="contactUs" className="font-bold text-md cursor-pointer">Contact Us</Link>
+            <Link to="contactUs" className="hover:text-yellow-200 transition">Contact Us</Link>
           </li>
-         
-            <li className="flex w-8 h-8 cursor-pointer align-right" onClick={handleProfileClick}>
-               <img alt="profileimg" src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png" />
-              <label className="px-2 font-bold text-lg text-red-500">{registeredUserName}</label>
-             
-            </li>
-         
+          <li className="flex items-center cursor-pointer" onClick={handleProfileClick}>
+            <img
+              alt="profileimg"
+              className="w-8 h-8 rounded-full border-2 border-white"
+              src="https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png"
+            />
+            <span className="ml-2 font-bold text-lg text-white">{registeredUserName}</span>
+          </li>
         </ul>
-      </div>
-     
-    </div>
-  )
-}
+      </nav>
+    </header>
+  );
+};
+
 export default Head;
