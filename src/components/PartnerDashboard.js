@@ -1,15 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+//import { useSelector } from "react-redux";
 
 const PartnerDashboard = () => {
-  const userDetails= useSelector((appStore)=> appStore.user.user);
-  const [restaurant, setRestaurant] = useState({
-    name: "",
-    address: "",
-    postalcode: "",
-  });
-
+   
+  const Current_res_details= useSelector((appStore)=> appStore.restaurant.restaurant);
+  const selectedRestaurantId= Current_res_details.currentRestaurant.currentResId
   const [menuItems, setMenuItems] = useState([]);
   const [newItem, setNewItem] = useState({
     category: "",
@@ -27,63 +24,51 @@ const PartnerDashboard = () => {
   });
   
 
-  // Handlers
-  const handleRestaurantSubmit = (e) => {
+  const handleAddItem = async (e) => {
     e.preventDefault();
-    alert("Restaurant details saved!");
-  };
-
-  const handleAddItem = (e) => {
-    e.preventDefault();
+    console.log("selectedRestaurantId.."+selectedRestaurantId);
+    if(!selectedRestaurantId) return null;
     setMenuItems([...menuItems, newItem]);
-    setNewItem({category: "", itemName: "", price: "",  image: "",available: ""});
+   
      try {
-          const response =  axios.post("http://localhost:5000/api/auth/MenuItemsList", {
-            // category, itemName, price, image, available
-            setNewItem
+          const response = await axios.post("http://localhost:5000/api/auth/addMenu", {
+            restaurantId: selectedRestaurantId, // must come from your restaurant object
+            category: newItem.category,
+            itemName: newItem.itemName,
+            price: newItem.price,
+            image: newItem.image,
+            available: newItem.available,
+            
           });
-          alert("Item added Successfully.");
+          alert(response.data);
+           setNewItem({category: "", itemName: "", price: "",  image: "",available: ""});
           // navigate('/');
         } catch (error) {
           console.error(error.response?.data || error.message);
         }
   };
 
-  const handleAddTable = (e) => {
+  const handleAddTable =async (e) => {
     e.preventDefault();
+    if(!selectedRestaurantId) return null;
     setTables([...tables, newTable]);
-    setNewTable({ tableNumber: "", capacity: "", available: true });
+  try{
+      const result= await axios.post("http://localhost:5000/api/auth/table",{
+       restaurantId: selectedRestaurantId,
+       tableNumber: newTable.tableNumber,
+       capacity: newTable.capacity,
+       available: newTable.available
+     });
+      alert(result.data);
+       setNewTable({ tableNumber: "", capacity: "", available: true });
+      }catch(error){
+            console.error(error.result?.data || error.message);
+      }
   };
 
   return (
     <div className="pt-24 ml-64 p-8 bg-gradient-to-r from-red-50 via-orange-50 to-yellow-50 min-h-screen">
       <h1 className="text-3xl font-bold text-red-600 mb-8">Partner Dashboard</h1>
-
-      {/* Restaurant Details */}
-      <section className="mb-12 bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">Restaurant Details</h2>
-        <form onSubmit={handleRestaurantSubmit} className="space-y-4">
-          <input disabled={true}
-            className="w-full p-3 border rounded"
-            placeholder="Restaurant Name"
-            value={userDetails.user.restaurantName}
-            onChange={(e) => setRestaurant({ ...restaurant, name: e.target.value })}
-          />
-          <input
-            className="w-full p-3 border rounded"
-            placeholder="Address"
-            value={restaurant.address}
-            onChange={(e) => setRestaurant({ ...restaurant, address: e.target.value })}
-          />
-          <input
-            className="w-full p-3 border rounded"
-            placeholder="Postalcode"
-            value={restaurant.postalcode}
-            onChange={(e) => setRestaurant({ ...restaurant, postalcode: e.target.value })}
-          />
-          <button className="bg-red-600 text-white px-4 py-2 rounded">Save</button>
-        </form>
-      </section>
 
       {/* Menu Management */}
       <section className="mb-12 bg-white p-6 rounded-lg shadow-lg">

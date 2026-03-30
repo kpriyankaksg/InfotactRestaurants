@@ -2,7 +2,9 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/Users");
-const MenuItemsList= require("../models/menuItemsList")
+const MenuItemsList= require("../models/menuItemsList");
+const RestaurantList =require("../models/RestaurantsLists");
+const TablesInfo= require("../models/tablesList")
 
 const router = express.Router();
 
@@ -56,20 +58,49 @@ router.post("/login", async (req, res) => {
   }
   
 });
-
-// MenuItemsList
-router.post("/MenuItemsList", async (req, res) => {
-  const {category, itemName, price,image,available} = req.body;
-  console.log(req.body);
+// Insert Restaurant
+router.post("/restaurants", async (req, res) => {
+  const {name,address,postalCode,lat,lon}=req.body
   try {
-    const newItem = new MenuItemsList({category, itemName, price, image,available });
-    console.log(newItem);
-    await newItem.save();
-    res.status(201).json({ message: "New Item added successfully" });
+    const currentRestaurant = await RestaurantList.findOne({ name });
+    const restaurant = new RestaurantList({name,address,postalCode,lat,lon});
+    await restaurant.save();
+    console.log("Restaurant ID:", restaurant._id);
+    //localStorage.setItem("SelectedRestaurantId", restaurant._id);
+     res.status(201).json({currentRestaurant: {currentResId: currentRestaurant._id, name: currentRestaurant.name, address: currentRestaurant.address, postalCode: currentRestaurant.postalCode, lat: currentRestaurant.lat, lon: currentRestaurant.lon}});
+    // res.json({currentRestaurant: {currentResId: currentRestaurant._id, name: currentRestaurant.name, address: currentRestaurant.address, postalCode: currentRestaurant.postalCode, lat: currentRestaurant.lat, lon: currentRestaurant.lon}});
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
+
+// Insert Menu Item
+router.post("/addMenu", async (req, res) => {
+  const{restaurantId,category,itemName,price,image,available}=req.body;
+  try {
+    const menuItems = await MenuItemsList.find({ restaurantId: localStorage.getItem("SelectedRestaurantId") });
+    console.log(menuItems);
+    const menuItem = new MenuItemsList({restaurantId,category,itemName,price,image,available});
+    await menuItem.save();
+    res.status(201).json({message: "Item Inserted Successfully."});
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// Insert Table
+router.post("/table", async (req, res) => {
+  const {restaurantId,tableNumber,capacity,available}=req.body
+  try {
+    const table = new TablesInfo({restaurantId,tableNumber,capacity,available});
+    await table.save();
+    res.status(201).json({message: "Table Details Inserted Successfully."});
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+
 
 // Middleware
 const authMiddleware = (req, res, next) => {

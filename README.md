@@ -23,6 +23,11 @@ Hospitality Platform
 17.Created the Partner dashboard.
 18.Partner dashboard is designed to add the Restaurant details, Menu Items, seating arrangement.
 
+19.Inserted Restaurant Details.
+20.Inserted Menu Items and Tables with backend.
+21.Storing the restaurant details in Redux toolkit.
+22.Generating the lat, long by using postal code.
+
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
