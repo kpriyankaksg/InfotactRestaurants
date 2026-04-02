@@ -52,9 +52,19 @@ const Head=()=>{
           <li>
             <Link to="mainContainer" className="hover:text-yellow-200 transition">Home</Link>
           </li>
-          <li>
+
+
+         {userDetails?.user?.role === "Partner" ? (
+         <li>
+            <Link to="menu" className="hover:text-yellow-200 transition">Menu</Link>
+          </li>
+        ) : (
+         <li>
             <Link to="aboutUs" className="hover:text-yellow-200 transition">About Us</Link>
           </li>
+        )}
+
+          
           <li>
             <Link to="contactUs" className="hover:text-yellow-200 transition">Contact Us</Link>
           </li>

@@ -64,7 +64,7 @@ const handleLogout=()=>{
           </Link>
         </li>
 
-          {(userDetails?.user?.role === "Partner") && 
+          {/* {(userDetails?.user?.role === "Partner") && 
            <li>
           <Link
             to="contactUs"
@@ -73,8 +73,7 @@ const handleLogout=()=>{
             <span>📃</span> <span>Restaurant Details</span>
           </Link>
         </li>
-        
-          }
+          } */}
        
         <li
           className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition cursor-pointer"

@@ -60,26 +60,46 @@ router.post("/login", async (req, res) => {
 });
 // Insert Restaurant
 router.post("/restaurants", async (req, res) => {
-  const {name,address,postalCode,lat,lon}=req.body
+  const {userId,name,address,postalCode,lat,lon}=req.body
   try {
-    const currentRestaurant = await RestaurantList.findOne({ name });
-    const restaurant = new RestaurantList({name,address,postalCode,lat,lon});
+ 
+    const restaurant = new RestaurantList({userId,name,address,postalCode,lat,lon});
     await restaurant.save();
     console.log("Restaurant ID:", restaurant._id);
-    //localStorage.setItem("SelectedRestaurantId", restaurant._id);
-     res.status(201).json({currentRestaurant: {currentResId: currentRestaurant._id, name: currentRestaurant.name, address: currentRestaurant.address, postalCode: currentRestaurant.postalCode, lat: currentRestaurant.lat, lon: currentRestaurant.lon}});
-    // res.json({currentRestaurant: {currentResId: currentRestaurant._id, name: currentRestaurant.name, address: currentRestaurant.address, postalCode: currentRestaurant.postalCode, lat: currentRestaurant.lat, lon: currentRestaurant.lon}});
+     res.status(201).json({currentRestaurant: { 
+        currentResId: restaurant._id,
+        name: restaurant.name,
+        address: restaurant.address,
+        postalCode: restaurant.postalCode,
+        lat: restaurant.lat,
+        lon: restaurant.lon
+}});
+   
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
+    // Get restaurant
+  router.get("/getRestaurant/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+     const restaurant = await RestaurantList.findOne({ userId });
+
+    if (!restaurant) {
+      return res.status(404).json({ message: "No restaurant found for this user" });
+    }
+    res.status(200).json(restaurant);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+  });
 
 // Insert Menu Item
 router.post("/addMenu", async (req, res) => {
   const{restaurantId,category,itemName,price,image,available}=req.body;
   try {
-    const menuItems = await MenuItemsList.find({ restaurantId: localStorage.getItem("SelectedRestaurantId") });
-    console.log(menuItems);
+    // const menuItems = await MenuItemsList.find({ restaurantId: localStorage.getItem("SelectedRestaurantId") });
+    // console.log(menuItems);
     const menuItem = new MenuItemsList({restaurantId,category,itemName,price,image,available});
     await menuItem.save();
     res.status(201).json({message: "Item Inserted Successfully."});
@@ -87,6 +107,22 @@ router.post("/addMenu", async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
+
+// Get all menu items for a restaurant
+router.get("/getMenu/:restaurantId", async (req, res) => {
+  try {
+    const { restaurantId } = req.params;
+    const menuItems = await MenuItemsList.find({ restaurantId });
+     if (!menuItems || menuItems.length === 0) {
+      return res.status(404).json({ message: "No MenuItems found for this restaurant." });
+    }
+    res.status(200).json(menuItems);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+   
+});
+
 
 // Insert Table
 router.post("/table", async (req, res) => {
@@ -99,6 +135,22 @@ router.post("/table", async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
+
+// Get all tables for a restaurant
+router.get("/getTables/:restaurantId", async (req, res) => {
+  try {
+    const { restaurantId } = req.params;
+    const tables = await TablesInfo.find({ restaurantId });
+     if (!tables || tables.length === 0) {
+      return res.status(404).json({ message: "There is no Seating Arrangement." });
+    }
+    res.status(200).json(tables);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+  
+});
+
 
 
 

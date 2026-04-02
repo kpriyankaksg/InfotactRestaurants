@@ -28,6 +28,10 @@ Hospitality Platform
 21.Storing the restaurant details in Redux toolkit.
 22.Generating the lat, long by using postal code.
 
+23.Getting the restaurant Details from db.
+24.Getting menuItems and tables which are inserted.
+25.Designed the Menu page wich shows MenuItems&tables.
+
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
