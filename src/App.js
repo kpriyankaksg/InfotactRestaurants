@@ -6,6 +6,7 @@ import './App.css';
 import AboutUs from './components/AboutUs';
 import Body from './components/Body';
 import ContactUs from './components/ContactUs';
+import CustomerResMenu from './components/CustomerResMenu';
 import Login from './components/Login';
 import MainContainer from './components/MainContainer';
 import Menu from './components/Menu';
@@ -75,6 +76,10 @@ const appRouter= createBrowserRouter([
        {
         path:"menu",
         element:<Menu />
+      },
+      {
+        path:"restaurant/:resId",
+        element:<CustomerResMenu />
       }
     ]
   }

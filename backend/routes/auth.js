@@ -151,6 +151,17 @@ router.get("/getTables/:restaurantId", async (req, res) => {
   
 });
 
+ // getting all restaurants for a customer
+router.get("/restaurants", async (req, res) => {
+  try {
+    const restaurants = await RestaurantList.find();
+    res.status(200).json(restaurants);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+
 
 
 

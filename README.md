@@ -32,6 +32,9 @@ Hospitality Platform
 24.Getting menuItems and tables which are inserted.
 25.Designed the Menu page wich shows MenuItems&tables.
 
+26.Dashboard is created for customer.
+27.Fetched the all Restaurants from DB.
+
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

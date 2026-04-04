@@ -216,10 +216,6 @@ const PartnerDashboard = () => {
     </form>
 
 
-
-
-
-
       {/* Menu Management */}
       <section className="mb-12 bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-xl font-semibold mb-4">Menu Items</h2>
