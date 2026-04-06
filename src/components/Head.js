@@ -1,6 +1,7 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { selectCartCount } from "../utils/cartSlice";
 import { toggleMenu } from "../utils/menuSlice";
 
 
@@ -8,7 +9,8 @@ const Head=()=>{
   const dispatch= useDispatch();
    const navigate= useNavigate();
    const userDetails= useSelector((appStore)=> appStore.user.user);
-   const registeredUserName= userDetails.user.name
+   const registeredUserName= userDetails.user.name;
+   const cartCount= useSelector(selectCartCount);
 
   const handleProfileClick=()=>{
     navigate("profile");
@@ -64,10 +66,20 @@ const Head=()=>{
           </li>
         )}
 
-          
           <li>
             <Link to="contactUs" className="hover:text-yellow-200 transition">Contact Us</Link>
           </li>
+           {(userDetails?.user?.role === "Customer") && (
+            <li className="flex jestify-between cursor-pointer"><Link to="cart">
+              <div className="flex item-center">
+              <img alt="cartLogo" className="w-8 h-8  " 
+              src="https://www.freeiconspng.com/thumbs/cart-icon/basket-cart-icon-27.png"/>
+              {cartCount >0 &&
+              <span className="font-2xl text-black px-1 ">{cartCount}</span>}
+              </div>
+            </Link>
+            </li>
+          )}
           <li className="flex items-center cursor-pointer" onClick={handleProfileClick}>
             <img
               alt="profileimg"
@@ -76,6 +88,7 @@ const Head=()=>{
             />
             <span className="ml-2 font-bold text-lg text-white">{registeredUserName}</span>
           </li>
+      
         </ul>
       </nav>
     </header>

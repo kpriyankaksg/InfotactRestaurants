@@ -4,7 +4,7 @@ import cors from "cors";
 import { config } from 'dotenv'; // Import the config function
 import express from "express";
 import mongoose from "mongoose";
-import authRoutes from "./routes/auth.js";
+import { default as authRoutes, default as orderRoutes, default as paymentRoutes } from "./routes/auth.js";
 config();
 //const authRoutes= require("./routes/auth");
 //const express = require("express");
@@ -24,6 +24,9 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json()); // Parse JSON bodies
+app.use("/api/auth/orders", orderRoutes);
+app.use("/api/auth/payment", paymentRoutes);
+
 
 // Connect to MongoDB
 // mongoose.connect(

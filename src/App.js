@@ -5,6 +5,7 @@ import { Navigate } from "react-router-dom";
 import './App.css';
 import AboutUs from './components/AboutUs';
 import Body from './components/Body';
+import Cart from "./components/Cart";
 import ContactUs from './components/ContactUs';
 import CustomerResMenu from './components/CustomerResMenu';
 import Login from './components/Login';
@@ -76,6 +77,10 @@ const appRouter= createBrowserRouter([
        {
         path:"menu",
         element:<Menu />
+      },
+      {
+        path:"cart",
+        element:<Cart />
       },
       {
         path:"restaurant/:resId",

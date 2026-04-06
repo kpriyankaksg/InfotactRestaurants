@@ -35,6 +35,9 @@ Hospitality Platform
 26.Dashboard is created for customer.
 27.Fetched the all Restaurants from DB.
 
+28.Showing all menuItems and tables list of individividual restaurant.
+29.Designed the cart.
+
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

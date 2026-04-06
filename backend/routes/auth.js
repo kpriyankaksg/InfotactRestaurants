@@ -4,7 +4,9 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/Users");
 const MenuItemsList= require("../models/menuItemsList");
 const RestaurantList =require("../models/RestaurantsLists");
-const TablesInfo= require("../models/tablesList")
+const TablesInfo= require("../models/tablesList");
+const { createOrder, getOrder } = require("../controllers/orderController");
+const { checkout } = require("../controllers/paymentController");
 
 const router = express.Router();
 
@@ -161,7 +163,10 @@ router.get("/restaurants", async (req, res) => {
   }
 });
 
-
+//For ordering Item
+router.post("/", createOrder);
+router.get("/:id", getOrder);
+router.post("/checkout", checkout);
 
 
 
