@@ -1,8 +1,12 @@
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const cart = useSelector((state) => state.cart.items);
+  console.log("cart", cart);
+  const userDetails= useSelector((appStore)=> appStore.user.user);
+  const navigate=useNavigate();
 
   // Calculate total only for menu items (tables are not billed)
   const itemsTotal = cart.reduce((sum, item) => {
@@ -20,8 +24,8 @@ const handleCheckOut=async ()=>{
    try {
     // Step 1: Create order
     const orderRes = await axios.post("http://localhost:5000/api/auth/orders", {
-      userId: "USER_ID", // replace with logged-in user
-      restaurantId: "RESTAURANT_ID", // current restaurant
+      userId: userDetails.user.id, // replace with logged-in user
+      restaurantId: cart[0].restaurantId, // current restaurant
       items: cart.filter((i) => i.type === "menu"),
       tables: cart.filter((i) => i.type === "table"),
       totalAmount: grandTotal
@@ -37,6 +41,7 @@ const handleCheckOut=async ()=>{
 
     if (paymentRes.data.success) {
       alert("Payment successful! Order status updated to Paid.");
+      navigate("myOrders");
     } else {
       alert("Payment failed. Try again.");
     }
@@ -52,6 +57,9 @@ const handleCheckOut=async ()=>{
   return (
     <div className="pt-24 ml-64 p-8 bg-gradient-to-r from-red-50 via-orange-50 to-yellow-50 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">Your Cart</h1>
+      {(cart.length === 0) && <img alt="cartLogo" className="px-60" 
+      src="https://qrstore.in/home_assets/img/empty-cart.png"/>}
+
       <ul className="space-y-2">
         {cart.map((item, idx) => (
           <li

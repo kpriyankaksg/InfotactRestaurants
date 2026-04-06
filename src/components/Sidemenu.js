@@ -35,9 +35,14 @@ const handleLogout=()=>{
             <span>🏠</span> <span>Home</span>
           </Link>
         </li>
-        <li className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition">
-          <span>📋</span> <span>Orders</span>
+         {userDetails?.user?.role === "Customer" &&
+         <li className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition">
+          <Link to="myOrders">
+          <span>📋</span> <span>My Orders</span>
+          </Link>
         </li>
+         }
+        
        
         <li>
          {userDetails?.user?.role === "Partner" ? (

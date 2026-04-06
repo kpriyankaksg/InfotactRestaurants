@@ -38,6 +38,9 @@ Hospitality Platform
 28.Showing all menuItems and tables list of individividual restaurant.
 29.Designed the cart.
 
+30.Adding Items and Reserved tables to cart.
+31.Done the mock payment gateway that updates the DB order Status.
+
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

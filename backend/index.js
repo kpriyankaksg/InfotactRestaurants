@@ -24,19 +24,10 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json()); // Parse JSON bodies
+app.use("/api/auth", authRoutes);
 app.use("/api/auth/orders", orderRoutes);
 app.use("/api/auth/payment", paymentRoutes);
 
-
-// Connect to MongoDB
-// mongoose.connect(
-//   process.env.REACT_APP_atlas_URL,
-//   options,
-//   (err) => {
-//    if(err) console.log(err) 
-//    else console.log("mongdb is connected");
-//   }
-// );
 
  await mongoose.connect("mongodb+srv://kpriyankaksg:ndyIgQ7srvtlPA8c@cluster0.l38jwjc.mongodb.net/Restaurants?appName=Cluster0")
   .then(() => {
@@ -49,6 +40,6 @@ app.use("/api/auth/payment", paymentRoutes);
 
   });
 
-app.use("/api/auth", authRoutes);
+
 app.listen(PORT,()=> console.log(`Server running on port" ${PORT}`))
 

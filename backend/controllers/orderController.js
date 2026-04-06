@@ -32,3 +32,13 @@ export const getOrder = async (req, res) => {
     res.status(500).json({ message: "Error fetching order", error: err.message });
   }
 };
+
+export const getUserOrders = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const orders = await Order.find({ userId }).sort({ createdAt: -1 });
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ message: "Error fetching user orders", error: err.message });
+  }
+};
