@@ -41,6 +41,8 @@ Hospitality Platform
 30.Adding Items and Reserved tables to cart.
 31.Done the mock payment gateway that updates the DB order Status.
 
+32.Designed the MyOrders page with orders which are done by User.
+
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

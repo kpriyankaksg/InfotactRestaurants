@@ -30,20 +30,11 @@ const handleLogout=()=>{
         <li>
           <Link
             to="mainContainer"
-            className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition"
-          >
+            className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition" >
             <span>🏠</span> <span>Home</span>
           </Link>
         </li>
-         {userDetails?.user?.role === "Customer" &&
-         <li className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition">
-          <Link to="myOrders">
-          <span>📋</span> <span>My Orders</span>
-          </Link>
-        </li>
-         }
-        
-       
+         
         <li>
          {userDetails?.user?.role === "Partner" ? (
            <Link
@@ -51,15 +42,23 @@ const handleLogout=()=>{
             className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition" >
             <span>📱</span> <span>Menu</span>
           </Link>
-        
         ) : (
-           <Link
-            to="aboutUs"
-            className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition" >
-            <span>📱</span> <span>About Us</span>
+        
+          <Link to="myOrders" className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition">
+          <span>📋</span> <span>My Orders</span>
           </Link>
+        
         )}
         </li>
+
+        <li>
+        <Link
+            to="contactUs"
+            className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition" >
+            <span>☎️ </span> <span>Contact Us</span>
+          </Link>
+        </li>
+
          <li>
           <Link
             to="profile"
@@ -68,17 +67,6 @@ const handleLogout=()=>{
             <span>👤</span> <span>Profile</span>
           </Link>
         </li>
-
-          {/* {(userDetails?.user?.role === "Partner") && 
-           <li>
-          <Link
-            to="contactUs"
-            className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition"
-          >
-            <span>📃</span> <span>Restaurant Details</span>
-          </Link>
-        </li>
-          } */}
        
         <li
           className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition cursor-pointer"

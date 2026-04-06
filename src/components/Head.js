@@ -62,7 +62,7 @@ const Head=()=>{
           </li>
         ) : (
          <li>
-            <Link to="aboutUs" className="hover:text-yellow-200 transition">About Us</Link>
+            <Link to="myOrders" className="hover:text-yellow-200 transition">My Orders</Link>
           </li>
         )}
 
@@ -80,6 +80,7 @@ const Head=()=>{
             </Link>
             </li>
           )}
+
           <li className="flex items-center cursor-pointer" onClick={handleProfileClick}>
             <img
               alt="profileimg"
