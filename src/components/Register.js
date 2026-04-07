@@ -30,6 +30,7 @@ const Register = () => {
       navigate('/');
     } catch (error) {
       console.error(error.response?.data || error.message);
+      alert("Email already Exist.");
     }
   };
 

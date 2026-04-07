@@ -8,6 +8,7 @@ const reviewSchema = new mongoose.Schema({
   mediaAttached: { type: Boolean, default: false },
   points: { type: Number, default: 0 },
   suggestions: [String],
+  rating: { type: Number, min: 1, max: 5, required: true },
   createdAt: { type: Date, default: Date.now }
 });
 

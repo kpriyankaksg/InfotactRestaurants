@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Latlong_ApiKey } from "../utils/constants";
 import { addMenuItem } from "../utils/menuItemsSlice";
 import { setRestaurant } from "../utils/restaurantSlice";
 import { addTable } from "../utils/tableSlice";
@@ -38,7 +39,7 @@ const PartnerDashboard = () => {
      // const apiKey = geocodingAPIKey; // replace with your key
       const fullAddress = `${restaurants.address} ${restaurants.postalCode}`;
       console.log(fullAddress);
-     const apiKey = "pk.9261116a0029435ee02344c13652b66c"; // from signup
+     const apiKey = Latlong_ApiKey; // from signup
      try{
       const response = await fetch(
       `https://us1.locationiq.com/v1/search?key=${apiKey}&q=${encodeURIComponent(fullAddress)}&format=json`

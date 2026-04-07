@@ -8,6 +8,7 @@ const Review = () => {
   const [mediaAttached, setMediaAttached] = useState(false);
   const [points, setPoints] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
+  const [rating, setRating]= useState(null);
   const location=useLocation();
   const userId= location.state?.userId;
   const restaurantId= location.state?.resId;
@@ -22,7 +23,8 @@ const Review = () => {
         restaurantId: restaurantId,
         reviewText: reviewText,
         mediaAttached: mediaAttached,
-        orderHistory: orderHistory
+        orderHistory: orderHistory,
+         rating: rating
       });
       console.log(res.data);
       setPoints(res.data.points);
@@ -44,6 +46,19 @@ const Review = () => {
           className="w-full border rounded p-3"
           rows={5}
         />
+        <label className="block mb-2">Rating:</label>
+          <select
+            value={rating}
+            onChange={(e) => setRating(Number(e.target.value))}
+            className="border p-2 rounded"
+          >
+            <option value="">Select rating</option>
+            <option value="1">⭐ 1</option>
+            <option value="2">⭐ 2</option>
+            <option value="3">⭐ 3</option>
+            <option value="4">⭐ 4</option>
+            <option value="5">⭐ 5</option>
+          </select>
 
         <div className="flex items-center gap-2">
           <input
@@ -53,6 +68,7 @@ const Review = () => {
           />
           <label>Attach media (photo/video)</label>
         </div>
+
 
         <button
           type="submit"
