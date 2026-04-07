@@ -12,7 +12,7 @@ const MyOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/orders/user/${userDetails.user.id}`);
+        const res = await axios.get(`http://localhost:5000/api/order/user/${userDetails.user.id}`);
         console.log("orders list",res.data)
         setOrders(res.data);
       } catch (err) {

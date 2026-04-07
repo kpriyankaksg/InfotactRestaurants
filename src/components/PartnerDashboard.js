@@ -12,9 +12,9 @@ const PartnerDashboard = () => {
    const [menuItemsAdd, setMenuItemsAdd] = useState([]);
   const [selectedRestaurantId, setSelectedRestaurantId]=useState(null);
   const Current_res_details= useSelector((appStore)=> appStore.restaurant.restaurant);
-  console.log("Current_res_details...", Current_res_details);
+  //console.log("Current_res_details...", Current_res_details);
   const userDetails= useSelector((appStore)=> appStore.user.user);
-  console.log("userDetails...", userDetails);
+  //console.log("userDetails...", userDetails);
   const dispatch= useDispatch();
   const navigate= useNavigate();
 
@@ -39,7 +39,8 @@ const PartnerDashboard = () => {
       const fullAddress = `${restaurants.address} ${restaurants.postalCode}`;
       console.log(fullAddress);
      const apiKey = "pk.9261116a0029435ee02344c13652b66c"; // from signup
-    const response = await fetch(
+     try{
+      const response = await fetch(
       `https://us1.locationiq.com/v1/search?key=${apiKey}&q=${encodeURIComponent(fullAddress)}&format=json`
     );
     const latlongresult = await response.json();
@@ -50,8 +51,15 @@ const PartnerDashboard = () => {
       setLatLong({lat, lon});
       return { lat, lon };
     } else {
-      throw new Error("No results found");
+      throw new Error("No results found for this address");
     }
+     }
+     catch(err){
+       console.error("Geocoding failed:", err.message);
+    alert("Could not find coordinates. Please check the address spelling.");
+
+     }
+    
   }
   
   // add restaurant

@@ -23,7 +23,7 @@ const CartPage = () => {
 const handleCheckOut=async ()=>{
    try {
     // Step 1: Create order
-    const orderRes = await axios.post("http://localhost:5000/api/auth/orders", {
+    const orderRes = await axios.post("http://localhost:5000/api/order", {
       userId: userDetails.user.id, // replace with logged-in user
       restaurantId: cart[0].restaurantId, // current restaurant
       items: cart.filter((i) => i.type === "menu"),
@@ -34,14 +34,14 @@ const handleCheckOut=async ()=>{
     const orderId = orderRes.data._id;
 
     // Step 2: Simulate payment
-    const paymentRes = await axios.post("http://localhost:5000/api/auth/payment/checkout", {
+    const paymentRes = await axios.post("http://localhost:5000/api/payment/checkout", {
       orderId,
       amount: grandTotal
     });
 
     if (paymentRes.data.success) {
       alert("Payment successful! Order status updated to Paid.");
-      navigate("myOrders");
+      navigate("/body/myOrders");
     } else {
       alert("Payment failed. Try again.");
     }

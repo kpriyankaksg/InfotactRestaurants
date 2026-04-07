@@ -62,7 +62,7 @@ const Head=()=>{
           </li>
         ) : (
          <li>
-            <Link to="myOrders" className="hover:text-yellow-200 transition">My Orders</Link>
+            <Link to="/body/myOrders" className="hover:text-yellow-200 transition">My Orders</Link>
           </li>
         )}
 
