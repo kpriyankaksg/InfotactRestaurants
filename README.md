@@ -44,6 +44,7 @@ Hospitality Platform
 32.Designed the MyOrders page with orders which are done by User.
 
 33.Developed the Review page. By giving review user will get points.
+34.Done the geoNear and calculated the geographical distance.
 
 
 

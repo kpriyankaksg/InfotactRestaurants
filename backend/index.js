@@ -5,6 +5,7 @@ import { config } from 'dotenv'; // Import the config function
 import express from "express";
 import mongoose from "mongoose";
 import authRoutes from "./routes/auth.js";
+import discoverRoutes from "./routes/discovery.js";
 import orderRoutes from "./routes/order.js";
 import paymentRoutes from "./routes/payment.js";
 import reviewRoutes from "./routes/review.js";
@@ -28,6 +29,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(express.json()); // Parse JSON bodies
+app.use("/api/discover", discoverRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payment", paymentRoutes);

@@ -7,7 +7,15 @@ const CustomerDashboard = () => {
 
   useEffect(() => {
     const fetchRestaurants = async () => {
-      const response = await axios.get("http://localhost:5000/api/auth/restaurants");
+      // Example: Hyderabad coordinates
+      const lat = 17.385044;
+      const lng = 78.486671;
+
+       const response = await axios.get("http://localhost:5000/api/discover", {
+        params: { lat, lng, page: 1, limit: 10 }
+      });
+
+      // const response = await axios.get("http://localhost:5000/api/auth/restaurants");
       setRestaurants(response.data);
       console.log("all restaurants", response.data);
     };
@@ -22,6 +30,9 @@ const CustomerDashboard = () => {
           <li key={res._id} className="border p-4 rounded">
             <h2 className="text-xl font-semibold">{res.name}</h2>
             <p>{res.address}</p>
+              <p className="text-sm text-gray-600">
+              Distance: {(res.distance / 1000).toFixed(2)} km | Rating: {res.rating}
+            </p>
             <Link to={`/body/restaurant/${res._id}`} className="text-red-600 underline">
               View Menu & Tables
             </Link>

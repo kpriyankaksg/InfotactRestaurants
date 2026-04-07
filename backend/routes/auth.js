@@ -63,22 +63,35 @@ router.post("/login", async (req, res) => {
 });
 // Insert Restaurant
 router.post("/restaurants", async (req, res) => {
-  const {userId,name,address,postalCode,lat,lon}=req.body
+  const { userId, name, address, postalCode, lat, lon } = req.body;
   try {
- 
-    const restaurant = new RestaurantList({userId,name,address,postalCode,lat,lon});
+    const restaurant = new RestaurantList({
+      userId,
+      name,
+      address,
+      postalCode,
+      rating: 0, // default rating
+      location: {
+        type: "Point",
+        coordinates: [parseFloat(lon), parseFloat(lat)] // GeoJSON expects [longitude, latitude]
+      }
+    });
+
     await restaurant.save();
     console.log("Restaurant ID:", restaurant._id);
-     res.status(201).json({currentRestaurant: { 
+
+    res.status(201).json({
+      currentRestaurant: {
         currentResId: restaurant._id,
         name: restaurant.name,
         address: restaurant.address,
         postalCode: restaurant.postalCode,
-        lat: restaurant.lat,
-        lon: restaurant.lon
-}});
-   
+        rating: restaurant.rating,
+        location: restaurant.location
+      }
+    });
   } catch (err) {
+    console.error("Error inserting restaurant:", err);
     res.status(400).json({ error: err.message });
   }
 });

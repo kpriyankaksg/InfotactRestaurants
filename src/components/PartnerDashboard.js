@@ -57,17 +57,21 @@ const PartnerDashboard = () => {
   // add restaurant
     const handleSubmit =async (e) => {
       e.preventDefault();
-     // console.log("Restaurant details",userDetails.user.restaurantName, restaurants, latLong.lat, latLong.lon);
+     console.log("Restaurant details",userDetails.user.id, userDetails.user.restaurantName, restaurants.address,restaurants.postalCode,   parseFloat(latLong.lat),  parseFloat(latLong.lon));
+    //  location: { type: "Point", coordinates: [78.486671, 17.385044] }
       try{
       const result= await axios.post("http://localhost:5000/api/auth/restaurants",{
                     userId: userDetails.user.id,
                     name: userDetails.user.restaurantName,
                     address: restaurants.address,
                     postalCode: restaurants.postalCode,
-                    lat: latLong.lat,
-                    lon: latLong.lon,
-  
+                    lat: parseFloat(latLong.lat),
+                    lon: parseFloat(latLong.lon)
+
+                   
       });
+      //  lat: latLong.lat,
+      //               lon: latLong.lon,
        console.log("Saved Restaurant:", result);
        const RestaurantDetails = result.data;
              dispatch(setRestaurant(RestaurantDetails));
@@ -100,7 +104,7 @@ const PartnerDashboard = () => {
       }
     } catch (error) {
       console.error(error.response?.data || error.message);
-      alert("Error fetching restaurant details. Please try again.");
+      // alert("Error fetching restaurant details. Please try again.");
       //navigate("contactUs");
     }
   };
