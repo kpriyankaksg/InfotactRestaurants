@@ -4,7 +4,11 @@ import cors from "cors";
 import { config } from 'dotenv'; // Import the config function
 import express from "express";
 import mongoose from "mongoose";
-import { default as authRoutes, default as orderRoutes, default as paymentRoutes } from "./routes/auth.js";
+import authRoutes from "./routes/auth.js";
+import orderRoutes from "./routes/order.js";
+import paymentRoutes from "./routes/payment.js";
+import reviewRoutes from "./routes/review.js";
+
 config();
 //const authRoutes= require("./routes/auth");
 //const express = require("express");
@@ -25,8 +29,9 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json()); // Parse JSON bodies
 app.use("/api/auth", authRoutes);
-app.use("/api/auth/orders", orderRoutes);
-app.use("/api/auth/payment", paymentRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/payment", paymentRoutes);
+app.use("/api/reviews", reviewRoutes);
 
 
  await mongoose.connect("mongodb+srv://kpriyankaksg:ndyIgQ7srvtlPA8c@cluster0.l38jwjc.mongodb.net/Restaurants?appName=Cluster0")

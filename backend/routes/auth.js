@@ -5,8 +5,9 @@ const User = require("../models/Users");
 const MenuItemsList= require("../models/menuItemsList");
 const RestaurantList =require("../models/RestaurantsLists");
 const TablesInfo= require("../models/tablesList");
-const { createOrder, getOrder, getUserOrders } = require("../controllers/orderController");
-const { checkout } = require("../controllers/paymentController");
+// const { createOrder, getOrder, getUserOrders } = require("../controllers/orderController");
+// const { checkout } = require("../controllers/paymentController");
+
 
 const router = express.Router();
 
@@ -164,11 +165,38 @@ router.get("/restaurants", async (req, res) => {
 });
 
 //For ordering Item and payment checkout
-router.post("/", createOrder);
-router.get("/:id", getOrder);
-router.post("/checkout", checkout);
-// for getting the myOrders list
-router.get("/user/:userId", getUserOrders);
+// router.post("/", createOrder);
+// router.get("/:id", getOrder);
+// router.post("/checkout", checkout);
+// // for getting the myOrders list
+// router.get("/user/:userId", getUserOrders);
+
+//Reviews
+// router.post("/submitReview", async (req, res) => {
+//   try {
+//     const { userId, restaurantId, reviewText, mediaAttached, orderHistory } = req.body;
+
+//     const keywords = ["delicious", "spicy", "fresh", "service", "ambience"]; // base keywords
+//     const points = calculatePoints(reviewText, keywords, mediaAttached);
+//     const suggestions = suggestKeywords(reviewText, orderHistory);
+
+//     const review = new Review({
+//       userId,
+//       restaurantId,
+//       text: reviewText,
+//       mediaAttached,
+//       points,
+//       suggestions
+//     });
+
+//     await review.save();
+
+//     res.json({ success: true, points, suggestions });
+//   } catch (err) {
+//     res.status(500).json({ success: false, message: err.message });
+//   }
+// });
+
 
 
 

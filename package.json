@@ -11,6 +11,7 @@
     "axios": "^1.13.6",
     "crypto-browserify": "^3.12.1",
     "mongoose": "^9.2.4",
+    "natural": "^8.1.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-geocode": "^2.0.1",

@@ -2,6 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 
 const MyOrders = () => {
@@ -11,7 +12,7 @@ const MyOrders = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/auth/orders/user/${userDetails.user.id}`);
+        const res = await axios.get(`http://localhost:5000/api/orders/user/${userDetails.user.id}`);
         console.log("orders list",res.data)
         setOrders(res.data);
       } catch (err) {
@@ -20,6 +21,7 @@ const MyOrders = () => {
     };
     fetchOrders();
   }, [userDetails.user.id]);
+
 
   return (
     <div className="pt-24 ml-64 p-8 bg-gradient-to-r from-red-50 via-orange-50 to-yellow-50 min-h-screen">
@@ -62,10 +64,19 @@ const MyOrders = () => {
                 <span>Delivery Fee: ₹{order.deliveryFee}</span>
                 <span className="font-bold">Total: ₹{order.totalAmount}</span>
               </div>
+                <div className="py-4">
+                <button className="p-2 m-2 bg-green-700 font-mediun text-white border border-black rounded-lg">Track Your Order</button>
+                <button className="p-2 m-2 bg-green-700 font-mediun text-white border border-black rounded-lg">
+                  <Link to={`/body/review`} state={{userId:order.userId,resId:order.restaurantId,items:order.items[0].itemName}}>Write Review & Get Points</Link>
+                  </button>
+                </div>
+
             </li>
+          
           ))}
         </ul>
       )}
+    
     </div>
   );
 };
