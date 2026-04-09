@@ -30,55 +30,129 @@ const MyOrders = () => {
         <p>No orders yet.</p>
       ) : (
         <ul className="space-y-4">
-          {orders.map((order) => (
-            <li key={order._id} className="border p-4 rounded">
-              <div className="flex justify-between">
-                <span className="font-semibold">Order #{order._id}</span>
-                <span className={`font-bold ${order.status === "Paid" ? "text-green-600" : "text-yellow-600"}`}>
-                  {order.status}
-                </span>
-              </div>
-              <div className="mt-2">
-                <h3 className="font-medium text-red-600">Items:</h3>
-                <ul className="ml-4 list-disc">
-                  {order.items.map((item) => (
-                    <li key={item._id}>
-                      {item.itemName} × {item.quantity} — ₹{item.price * item.quantity}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              {order.tables.length > 0 && (
-                <div className="mt-2">
-                  <h3 className="font-medium text-red-600">Reserved Tables:</h3>
-                  <ul className="ml-4 list-disc">
-                    {order.tables.map((table) => (
-                      <li key={table._id}>
-                        Table {table.tableNumber} (Capacity {table.capacity})
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              <div className="mt-2 flex justify-between">
-                <span>Delivery Fee: ₹{order.deliveryFee}</span>
-                <span className="font-bold">Total: ₹{order.totalAmount}</span>
-              </div>
-                <div className="py-4">
-                <button className="p-2 m-2 bg-green-700 font-mediun text-white border border-black rounded-lg">Track Your Order</button>
-                <button className="p-2 m-2 bg-green-700 font-mediun text-white border border-black rounded-lg">
-                  <Link to={`/body/review`} state={{userId:order.userId,resId:order.restaurantId,items:order.items[0].itemName}}>Write Review & Get Points</Link>
-                  </button>
-                </div>
+        {orders.map((order) => (
+          <li key={order._id} className="border p-4 rounded">
+            <div className="flex justify-between">
+              <span className="font-semibold">Order #{order._id}</span>
+               <span className="font-bold">Total: ₹{order.totalAmount}</span>
+              <span className={`font-bold ${order.status === "Paid" ? "text-green-600" : "text-yellow-600"}`}>
+                {order.status}
+              </span>
+            </div>
 
-            </li>
+      {order.restaurants.map((resBlock, idx) => (
+        <div key={idx} className="mt-4 border-t pt-2">
+          <h3 className="font-medium text-red-600">
+            Restaurant: {resBlock.restaurantId}
+          </h3>
+
+              {/* Items */}
+          {resBlock.items?.length > 0 && (
+            <ul className="ml-4 list-disc">
+              {resBlock.items.map((item) => (
+                <li key={item._id}>
+                  {item.itemName} × {item.quantity} — ₹{item.price * item.quantity}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {/* Tables */}
+          {resBlock.tables?.length > 0 && (
+            <ul className="ml-4 list-disc">
+              {resBlock.tables.map((table) => (
+                <li key={table._id}>
+                  Table {table.tableNumber} (Capacity {table.capacity})
+                  {table.reservationDateTime && (
+                    <> — Reserved for {new Date(table.reservationDateTime).toLocaleString()}</>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
           
+        {/* Track + Review buttons */}
+          <div className="py-2">
+            <Link to={`/body/tracking`}>
+            <button className="p-2 m-2 bg-green-700 text-white rounded-lg">
+              Track Order
+            </button>
+            </Link>
+            <Link
+              to={`/body/review`}
+              state={{
+                userId: order.userId,
+                resId: resBlock.restaurantId,
+                items: resBlock.items.map(i => i.itemName) // pass all item names
+              }}
+              className="p-2 m-2 bg-green-700 text-white rounded-lg inline-block"
+            >
+              Write Review & Get Points
+            </Link>
+          </div>
+        </div>
           ))}
-        </ul>
-      )}
+          </li>
+            ))}
+          </ul>
+                )}
+                </div>
+            )
+          }
+
+
+        // <ul className="space-y-4">
+        //   {orders.map((order) => (
+        //     <li key={order._id} className="border p-4 rounded">
+        //       <div className="flex justify-between">
+        //         <span className="font-semibold">Order #{order._id}</span>
+        //         <span className={`font-bold ${order.status === "Paid" ? "text-green-600" : "text-yellow-600"}`}>
+        //           {order.status}
+        //         </span>
+        //       </div>
+        //       <div className="mt-2">
+        //         <h3 className="font-medium text-red-600">Items:</h3>
+        //         <ul className="ml-4 list-disc">
+        //           {(order.items?? []).map((item) => (
+        //             <li key={item._id}>
+        //               {item.itemName} × {item.quantity} — ₹{item.price * item.quantity}
+        //             </li>
+        //           ))}
+        //         </ul>
+        //       </div>
+        //       {(order.tables?? []).length > 0 && (
+        //         <div className="mt-2">
+        //           <h3 className="font-medium text-red-600">Reserved Tables:</h3>
+        //           <ul className="ml-4 list-disc">
+        //             {order.tables.map((table) => (
+        //               <li key={table._id}>
+        //                 Table {table.tableNumber} (Capacity {table.capacity})
+        //                 {table.reservationDateTime && (
+        //                  <> — Reserved for {new Date(table.reservationDateTime).toLocaleString()}</>  )}
+        //               </li>
+        //             ))}
+        //           </ul>
+        //         </div>
+        //       )}
+        //       <div className="mt-2 flex justify-between">
+        //         <span>Delivery Fee: ₹{order.deliveryFee}</span>
+        //         <span className="font-bold">Total: ₹{order.totalAmount}</span>
+        //       </div>
+        //         <div className="py-4">
+        //         <button className="p-2 m-2 bg-green-700 font-mediun text-white border border-black rounded-lg">Track Your Order</button>
+        //         <button className="p-2 m-2 bg-green-700 font-mediun text-white border border-black rounded-lg">
+        //           <Link to={`/body/review`} state={{userId:order.userId,resId:order.restaurantId,items:order.items[0].itemName}}>Write Review & Get Points</Link>
+        //           </button>
+        //         </div>
+
+        //     </li>
+          
+        //   ))}
+        // </ul>
+//       )}
     
-    </div>
-  );
-};
+//     </div>
+//   );
+// };
 
 export default MyOrders;

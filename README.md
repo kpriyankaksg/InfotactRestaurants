@@ -10,7 +10,6 @@ Hospitality Platform
 6.Design and Developed the User Singn Up and Sign In pages with API's.
 7.Developed the authentication layer utilizing JWT Token.
 8.Finally developing the application using Node, express, cors, axios, Mongoose, React-router-dom.
-
 9.Given different sign up for both partner and customer in same page.
 10.Installed the Redux toolkit.
 11.Handle the sidemenu open/close by using menuSlice in redux.
@@ -18,36 +17,28 @@ Hospitality Platform
 13.Utilized user details in Profile page and Successfully updated the profile.
 14.Designed the Dashboard with fixed header and sideMenu.
 15.Developed the logout functionality by clearing the userDetails.
-
 16.Given styles to the sign up and sign In
 17.Created the Partner dashboard.
 18.Partner dashboard is designed to add the Restaurant details, Menu Items, seating arrangement.
-
 19.Inserted Restaurant Details.
 20.Inserted Menu Items and Tables with backend.
 21.Storing the restaurant details in Redux toolkit.
 22.Generating the lat, long by using postal code.
-
 23.Getting the restaurant Details from db.
 24.Getting menuItems and tables which are inserted.
 25.Designed the Menu page wich shows MenuItems&tables.
-
 26.Dashboard is created for customer.
 27.Fetched the all Restaurants from DB.
-
 28.Showing all menuItems and tables list of individividual restaurant.
 29.Designed the cart.
-
 30.Adding Items and Reserved tables to cart.
 31.Done the mock payment gateway that updates the DB order Status.
-
 32.Designed the MyOrders page with orders which are done by User.
-
 33.Developed the Review page. By giving review user will get points.
 34.Done the geoNear and calculated the geographical distance.
 35.Implemented serchbar for serching with restaurant name.
 36.Updated the restaurant rating based on customers reviews.
-
+37.Implemented ordering food from multiple restaurants with single checkout.
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

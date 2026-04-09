@@ -15,6 +15,7 @@ import MyOrders from './components/MyOrders';
 import Profile from "./components/Profile";
 import Register from "./components/Register";
 import Review from "./components/Review";
+import Tracking from "./components/Tracking";
 import appStore from './utils/appStore';
 
 // import axios from 'axios';
@@ -87,6 +88,10 @@ const appRouter= createBrowserRouter([
       {
         path:"myOrders",
         element:<MyOrders />
+      },
+      {
+        path:"tracking",
+        element:<Tracking />
       },
       {
         path:"review",

@@ -20,10 +20,24 @@ const CustomerDashboard = () => {
     };
     fetchRestaurants();
     // Serch 
-     if (searchQuery.trim() === "") {
+  //    if (searchQuery.trim() === "") {
+  //   setFilteredRestaurants(restaurants);
+  // } else if (searchQuery.toLowerCase() === "near me") {
+  //   // Example: filter by distance < 5km
+  //   setFilteredRestaurants(restaurants.filter(res => res.distance < 5000));
+  // } else {
+  //   setFilteredRestaurants(
+  //     restaurants.filter(res =>
+  //       res.name.toLowerCase().includes(searchQuery.toLowerCase())
+  //     )
+  //   );
+  // }
+  }, []);
+
+  useEffect(() => {
+  if (searchQuery.trim() === "") {
     setFilteredRestaurants(restaurants);
   } else if (searchQuery.toLowerCase() === "near me") {
-    // Example: filter by distance < 5km
     setFilteredRestaurants(restaurants.filter(res => res.distance < 5000));
   } else {
     setFilteredRestaurants(
@@ -32,8 +46,8 @@ const CustomerDashboard = () => {
       )
     );
   }
+}, [searchQuery, restaurants]); // runs only when query or restaurants change
 
-  }, [searchQuery, restaurants]);
 
   return (
     <div className="pt-24 ml-64 p-8 bg-gradient-to-r from-red-50 via-orange-50 to-yellow-50 min-h-screen">

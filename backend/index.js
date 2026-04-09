@@ -1,7 +1,7 @@
 
 //require("dotenv").config(); // Load environment variables
 import cors from "cors";
-import { config } from 'dotenv'; // Import the config function
+import dotenv from "dotenv";
 import express from "express";
 import mongoose from "mongoose";
 import authRoutes from "./routes/auth.js";
@@ -9,18 +9,10 @@ import discoverRoutes from "./routes/discovery.js";
 import orderRoutes from "./routes/order.js";
 import paymentRoutes from "./routes/payment.js";
 import reviewRoutes from "./routes/review.js";
+dotenv.config();
 
-config();
-//const authRoutes= require("./routes/auth");
-//const express = require("express");
-// const mongoose = require("mongoose");
-// const cors = require("cors");
+// config();
 
-//const crypto = require('crypto');
-// node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
-// const secret = crypto.randomBytes(64).toString('hex');
-// console.log(secret);
-// Window.localStorage.setItem("JWT_Token",secret);
 
 
 const app = express();
@@ -36,7 +28,8 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/reviews", reviewRoutes);
 
 
- await mongoose.connect("mongodb+srv://kpriyankaksg:ndyIgQ7srvtlPA8c@cluster0.l38jwjc.mongodb.net/Restaurants?appName=Cluster0")
+//  await mongoose.connect("mongodb+srv://kpriyankaksg:ndyIgQ7srvtlPA8c@cluster0.l38jwjc.mongodb.net/Restaurants?appName=Cluster0")
+await mongoose.connect(process.env.ATLAS_URL)
   .then(() => {
     console.log("✅ Connected to MongoDB Atlas");
    
@@ -44,7 +37,6 @@ app.use("/api/reviews", reviewRoutes);
   .catch((error) => {
     console.error("MongoDB connection error:", error);
    
-
   });
 
 

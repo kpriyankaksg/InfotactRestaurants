@@ -8,11 +8,12 @@ const Review = () => {
   const [mediaAttached, setMediaAttached] = useState(false);
   const [points, setPoints] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
-  const [rating, setRating]= useState(null);
+  const [rating, setRating]= useState("");
   const location=useLocation();
   const userId= location.state?.userId;
   const restaurantId= location.state?.resId;
   const orderHistory=location.state?.items;
+  console.log(restaurantId);
 
   const handleSubmit = async (e) => {
     //console.log(userId,restaurantId,orderHistory,reviewText,mediaAttached);

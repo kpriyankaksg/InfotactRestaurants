@@ -19,17 +19,36 @@ const CartPage = () => {
   const deliveryFee = 99;
   const grandTotal = itemsTotal + (itemsTotal > 0 ? deliveryFee : 0);
 
+// for ordering food from multiple restaurants
+const groupedRestaurants = cart.reduce((acc, item) => {
+  const { restaurantId } = item;
+  if (!acc[restaurantId]) {
+    acc[restaurantId] = { restaurantId, items: [], tables: [] };
+  }
+  if (item.type === "menu") {
+    acc[restaurantId].items.push(item);
+  } else if (item.type === "table") {
+    acc[restaurantId].tables.push(item);
+  }
+  return acc;
+}, {});
+const restaurantsArray = Object.values(groupedRestaurants);
+
+
+
 // handling checkout
 const handleCheckOut=async ()=>{
    try {
     // Step 1: Create order
     const orderRes = await axios.post("http://localhost:5000/api/order", {
       userId: userDetails.user.id, // replace with logged-in user
-      restaurantId: cart[0].restaurantId, // current restaurant
-      items: cart.filter((i) => i.type === "menu"),
-      tables: cart.filter((i) => i.type === "table"),
+      restaurants: restaurantsArray,
+      // restaurantId: cart[0].restaurantId, // current restaurant
+      // items: cart.filter((i) => i.type === "menu"),
+      //tables: cart.filter((i) => i.type === "table"),
       totalAmount: grandTotal
     });
+    console.log(orderRes.data);
 
     const orderId = orderRes.data._id;
 

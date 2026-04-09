@@ -8,6 +8,9 @@ const CustomerResMenu = () => {
   const { resId } = useParams();
   const [menuItems, setMenuItems] = useState([]);
   const [tables, setTables] = useState([]);
+  const [reservationDate, setReservationDate]=useState([]);
+  const [reservationTime, setReservationTime] = useState("");
+
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.items); // cartSlice state
 
@@ -15,6 +18,7 @@ const CustomerResMenu = () => {
     const fetchData = async () => {
       const menuRes = await axios.get(`http://localhost:5000/api/auth/getMenu/${resId}`);
       setMenuItems(menuRes.data);
+      console.log("menuItems", menuRes.data);
 
       const tableRes = await axios.get(`http://localhost:5000/api/auth/getTables/${resId}`);
       setTables(tableRes.data);
@@ -34,11 +38,13 @@ const CustomerResMenu = () => {
 
   // Reserve table
   const reserveTable = (table) => {
-    dispatch(reserveTableItem({ ...table, type: "table" }));
+     const reservationDateTime = new Date(`${reservationDate}T${reservationTime}`);
+
+    dispatch(reserveTableItem({ ...table, type: "table",reservationDateTime }));
     // mark table as booked locally so button changes
     setTables((prev) =>
       prev.map((t) =>
-        t._id === table._id ? { ...t, available: false } : t
+        t._id === table._id ? { ...t, available: false,reservationDateTime  } : t
       )
     );
   };
@@ -96,6 +102,21 @@ const CustomerResMenu = () => {
       {/* Tables */}
       <section>
         <h2 className="text-xl font-semibold mb-4">Seating Arrangement</h2>
+        <label className="block mb-2">Reservation Date</label>
+        <input
+          type="date"
+          value={reservationDate}
+          onChange={(e) => setReservationDate(e.target.value)}
+          className="border p-2 rounded"
+        />
+            <label className="block mb-2 mt-2">Reservation Time</label>
+            <input
+              type="time"
+              value={reservationTime}
+              onChange={(e) => setReservationTime(e.target.value)}
+              className="border p-2 rounded"
+            />
+
         <ul className="space-y-2">
           {tables.map((table) => (
             <li key={table._id} className="border p-3 rounded flex justify-between items-center">

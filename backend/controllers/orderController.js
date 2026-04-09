@@ -1,16 +1,13 @@
 
 import Order from "../models/order.js";
 
-// Create a new order (status = Pending)
 export const createOrder = async (req, res) => {
   try {
-    const { userId, restaurantId, items, tables, totalAmount } = req.body;
+    const { userId, restaurants, totalAmount } = req.body;
 
     const order = new Order({
       userId,
-      restaurantId,
-      items,
-      tables,
+      restaurants , // array of restaurants with items + tables
       totalAmount,
       status: "Pending"
     });
@@ -21,6 +18,27 @@ export const createOrder = async (req, res) => {
     res.status(500).json({ message: "Error creating order", error: err.message });
   }
 };
+
+
+// export const createOrder = async (req, res) => {
+//   try {
+//     const { userId, restaurantId, items, tables, totalAmount } = req.body;
+
+//     const order = new Order({
+//       userId,
+//       restaurantId,
+//       items,
+//       tables,
+//       totalAmount,
+//       status: "Pending"
+//     });
+
+//     await order.save();
+//     res.status(201).json(order);
+//   } catch (err) {
+//     res.status(500).json({ message: "Error creating order", error: err.message });
+//   }
+// };
 
 // Get order by ID
 export const getOrder = async (req, res) => {
