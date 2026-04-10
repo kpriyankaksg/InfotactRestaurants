@@ -40,6 +40,7 @@ Hospitality Platform
 36.Updated the restaurant rating based on customers reviews.
 37.Implemented ordering food from multiple restaurants with single checkout.
 38.Designed the my orders page for showing multiple restaurants.
+39.Implemented tracking order by providing order status and map.
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

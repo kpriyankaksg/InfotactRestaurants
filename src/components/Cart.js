@@ -92,9 +92,6 @@ const handleCheckOut=async ()=>{
             {item.type === "table" ? (
               <div>
                 <ul>
-                  <li className="text-xl font-semibold text-red-600">
-                  Restaurant - {item.selectedResName}
-                  </li>
                   <li className="py-2">
                  Reserved Table {item.tableNumber} (Capacity {item.capacity})
                   </li>
@@ -109,6 +106,7 @@ const handleCheckOut=async ()=>{
                   <li className="py-2">
                   {item.itemName} - ₹{item.price} × {item.quantity}
                   </li>
+                  
                 </ul>
               </div>
             )}

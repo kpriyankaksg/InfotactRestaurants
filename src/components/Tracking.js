@@ -1,77 +1,116 @@
-
-import { useEffect, useState } from "react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-
-
-
-
-  // const userDetails= useSelector((appStore)=> appStore.user.user);
-  // const postalcode= userDetails.user.postalcode;
-  // console.log("Customer Postal Code", postalcode);
-  // const location=useLocation();
-  // const restaurantDetails= location.state?.restaurantDetails;
-  // console.log(restaurantDetails)
-
-
+import { Latlong_ApiKey } from "../utils/constants";
 
 const statuses = ["Placed", "Preparing", "On the way", "Delivered"];
 
 const Tracking = () => {
+  const mapRef = useRef(null);
+
   const location = useLocation();
+  const userDetails = useSelector((appStore) => appStore.user.user);
+  const customerPostalcode = userDetails.user.postalcode;
   const { restaurantDetails } = location.state || {};
 
   const [statusIndex, setStatusIndex] = useState(0);
+  const [customerCoords, setCustomerCoords] = useState(null);
 
   useEffect(() => {
-    // Status updates every 2 seconds
+    getCustomerLatLong();
+
     const statusInterval = setInterval(() => {
       setStatusIndex((prev) => (prev < statuses.length - 1 ? prev + 1 : prev));
     }, 2000);
 
-    // Google Maps setup
-    const [lon, lat] = restaurantDetails?.location || [];
-    const restaurantCoords = { lat, lng: lon };
-    const customerCoords = { lat: lat + 0.01, lng: lon + 0.01 }; // simulate customer nearby
+    return () => clearInterval(statusInterval);
+  }, []);
 
-    const map = new window.google.maps.Map(document.getElementById("map"), {
-      zoom: 14,
-      center: restaurantCoords,
-    });
+  useEffect(() => {
+  if (!restaurantDetails?.location || !customerCoords) return;
 
-    const bikeMarker = new window.google.maps.Marker({
-      position: restaurantCoords,
-      map,
-      icon: "https://img.icons8.com/color/48/delivery-scooter.png",
-    });
+  const [lon, lat] = restaurantDetails.location;
+  const restaurantCoords = [lat, lon];
 
-    // Animate bike every 1 second
-    let step = 0;
-    const totalSteps = 5; // reach in 5 seconds
-    const bikeInterval = setInterval(() => {
-      step++;
-      const latStep =
-        restaurantCoords.lat +
-        (customerCoords.lat - restaurantCoords.lat) * (step / totalSteps);
-      const lngStep =
-        restaurantCoords.lng +
-        (customerCoords.lng - restaurantCoords.lng) * (step / totalSteps);
-      bikeMarker.setPosition({ lat: latStep, lng: lngStep });
+  if (mapRef.current) {
+    mapRef.current.remove(); 
+    mapRef.current = null;
+  }
 
-      if (step === totalSteps) clearInterval(bikeInterval);
-    }, 1000);
+  const map = L.map("map").setView([lat, lon], 14);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: "© OpenStreetMap contributors",
+  }).addTo(map);
 
-    return () => {
-      clearInterval(statusInterval);
-      clearInterval(bikeInterval);
-    };
-  }, [restaurantDetails]);
+  mapRef.current = map;
+
+  // Restaurant marker
+  L.marker(restaurantCoords).addTo(map).bindPopup("Restaurant").openPopup();
+
+  // Customer marker
+  L.marker([customerCoords.lat, customerCoords.lng])
+    .addTo(map)
+    .bindPopup("Customer");
+
+  // Polyline route
+  L.polyline([restaurantCoords, [customerCoords.lat, customerCoords.lng]], {
+    color: "red",
+  }).addTo(map);
+
+  // Bike marker
+  const bikeIcon = L.icon({
+    iconUrl: "https://cdn3d.iconscout.com/3d/premium/thumb/deliveryman-going-to-deliver-parcel-3d-icon-png-download-4466369.png",
+    iconSize: [48, 48],
+    iconAnchor: [24, 24],
+  });
+
+  const bikeMarker = L.marker(restaurantCoords, { icon: bikeIcon }).addTo(map);
+
+  // Animate bike
+  let step = 0;
+  const totalSteps = 10; // smoother movement
+  const interval = setInterval(() => {
+    step++;
+    const latStep =
+      restaurantCoords[0] +
+      (customerCoords.lat - restaurantCoords[0]) * (step / totalSteps);
+    const lngStep =
+      restaurantCoords[1] +
+      (customerCoords.lng - restaurantCoords[1]) * (step / totalSteps);
+
+    bikeMarker.setLatLng([latStep, lngStep]);
+
+    if (step === totalSteps) clearInterval(interval);
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [restaurantDetails, customerCoords]);
+
+  // getting lat long based on postalcode
+  const getCustomerLatLong = async () => {
+    const apiKey = Latlong_ApiKey;
+    try {
+      const response = await fetch(
+        `https://us1.locationiq.com/v1/search?key=${apiKey}&q=${encodeURIComponent(
+          customerPostalcode
+        )}&format=json`
+      );
+      const result = await response.json();
+      if (result.length > 0) {
+        const { lat, lon } = result[0];
+        setCustomerCoords({ lat: parseFloat(lat), lng: parseFloat(lon) });
+      }
+    } catch (err) {
+      console.error("Geocoding failed:", err.message);
+    }
+  };
 
   return (
-    <div className="pt-24 ml-64 p-8 bg-gradient-to-r from-red-50 via-orange-50 to-yellow-50 min-h-screen">
+    <div className="pt-16 ml-64 p-8 bg-gradient-to-r from-red-50 via-orange-50 to-yellow-50 min-h-screen">
       <h1 className="text-2xl font-bold mb-6">Track Your Order</h1>
-
-      {/* Map */}
-      <div id="map" style={{ width: "100%", height: "300px" }} />
+      <div id="map" style={{ width: "100%", height: "400px" }} />
 
       {/* Status Progress */}
       <div className="mt-6">
@@ -95,22 +134,6 @@ const Tracking = () => {
           ></div>
         </div>
       </div>
-
-      {/* Delivery Info */}
-      {statusIndex === statuses.length - 1 && (
-        <div className="mt-6 p-4 border rounded bg-white shadow">
-          <h3 className="font-semibold text-red-600">Order delivered!</h3>
-          <p className="text-gray-600">Left at front door.</p>
-          <div className="flex items-center mt-2">
-            <img
-              src="https://img.icons8.com/ios-filled/50/user.png"
-              alt="Driver"
-              className="w-10 h-10 mr-2"
-            />
-            <span className="font-medium">Driver: Delicia</span>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
