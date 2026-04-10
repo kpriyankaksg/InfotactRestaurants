@@ -84,7 +84,7 @@ const CustomerDashboard = () => {
                     </p>
                   </div>
                   <Link
-                    to={`/body/restaurant/${res._id}`}
+                    to={`/body/restaurant/${res._id}` } state={{resName: res.name, postalCode: res.postalCode}}
                     className="text-sm text-white bg-red-600 px-3 py-1 rounded mt-2 w-fit hover:bg-red-700"
                   >
                     View Menu & Tables

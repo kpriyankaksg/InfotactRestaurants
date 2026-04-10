@@ -39,6 +39,7 @@ Hospitality Platform
 35.Implemented serchbar for serching with restaurant name.
 36.Updated the restaurant rating based on customers reviews.
 37.Implemented ordering food from multiple restaurants with single checkout.
+38.Designed the my orders page for showing multiple restaurants.
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

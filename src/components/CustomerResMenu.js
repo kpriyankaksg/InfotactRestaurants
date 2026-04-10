@@ -1,18 +1,22 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { addCart, reserveTableItem, updateQuantity } from "../utils/cartSlice"; // <-- your cartSlice actions
 
 const CustomerResMenu = () => {
   const { resId } = useParams();
+  const location=useLocation();
   const [menuItems, setMenuItems] = useState([]);
   const [tables, setTables] = useState([]);
   const [reservationDate, setReservationDate]=useState([]);
   const [reservationTime, setReservationTime] = useState("");
-
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.items); // cartSlice state
+
+  const selectedResName= location.state?.resName;
+  const selectedResPostalCode= location.state?.postalCode;
+  console.log(selectedResName, selectedResPostalCode);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +32,7 @@ const CustomerResMenu = () => {
 
   // Add menu item to cart
   const addToCart = (item) => {
-    dispatch(addCart({ ...item, type: "menu" }));
+    dispatch(addCart({ ...item, type: "menu", selectedResName,selectedResPostalCode}));
   };
 
   // Update quantity (+ / -)

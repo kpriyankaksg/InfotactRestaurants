@@ -23,7 +23,11 @@ const CartPage = () => {
 const groupedRestaurants = cart.reduce((acc, item) => {
   const { restaurantId } = item;
   if (!acc[restaurantId]) {
-    acc[restaurantId] = { restaurantId, items: [], tables: [] };
+    acc[restaurantId] = {
+       restaurantId,
+       restaurantName: item.restaurantName,   // ⭐ include snapshot
+       postalCode: item.postalCode,
+      items: [], tables: [] };
   }
   if (item.type === "menu") {
     acc[restaurantId].items.push(item);
@@ -86,13 +90,27 @@ const handleCheckOut=async ()=>{
             className="border p-3 rounded flex justify-between items-center"
           >
             {item.type === "table" ? (
-              <span>
-                Reserved Table {item.tableNumber} (Capacity {item.capacity})
-              </span>
+              <div>
+                <ul>
+                  <li className="text-xl font-semibold text-red-600">
+                  Restaurant - {item.selectedResName}
+                  </li>
+                  <li className="py-2">
+                 Reserved Table {item.tableNumber} (Capacity {item.capacity})
+                  </li>
+                </ul>
+              </div>
             ) : (
-              <span>
-                {item.itemName} - ₹{item.price} × {item.quantity}
-              </span>
+              <div>
+                <ul>
+                  <li className="text-xl font-semibold text-red-600">
+                  Restaurant - {item.selectedResName}
+                  </li>
+                  <li className="py-2">
+                  {item.itemName} - ₹{item.price} × {item.quantity}
+                  </li>
+                </ul>
+              </div>
             )}
           </li>
         ))}

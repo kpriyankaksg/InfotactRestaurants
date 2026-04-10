@@ -21,10 +21,10 @@ const Login = () => {
       const result = response.data;
       dispatch(setUser(result));
       console.log(result);
-      localStorage.setItem("userName", result.user.name);
-      localStorage.setItem("userEmail", result.user.email);
-      localStorage.setItem("userRole", result.user.role);
-      localStorage.setItem("userId", result.user.id);
+      // localStorage.setItem("userName", result.user.name);
+      // localStorage.setItem("userEmail", result.user.email);
+      // localStorage.setItem("userRole", result.user.role);
+      // localStorage.setItem("userId", result.user.id);
 
       if (result.token) {
         localStorage.setItem("token", result.token);
