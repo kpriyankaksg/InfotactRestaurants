@@ -1,5 +1,5 @@
 import express from "express";
-import { createOrder, getOrder, getUserOrders } from "../controllers/orderController.js";
+import { createOrder, getDailyRevenue, getOrder, getUserOrders } from "../controllers/orderController.js";
 
 const router = express.Router();
 
@@ -14,5 +14,10 @@ router.get("/user/:userId", getUserOrders);
 
 // generic route after
 router.get("/:id", getOrder);
+
+//.......extra.........
+// New revenue route
+router.get("/revenue/:restaurantId", getDailyRevenue);
+
 
 export default router;

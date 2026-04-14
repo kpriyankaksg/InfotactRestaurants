@@ -1,8 +1,10 @@
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { clearCart } from "../utils/cartSlice";
 
 const CartPage = () => {
+  const dispatch=useDispatch();
   const cart = useSelector((state) => state.cart.items);
   console.log("cart", cart);
   const userDetails= useSelector((appStore)=> appStore.user.user);
@@ -64,6 +66,7 @@ const handleCheckOut=async ()=>{
 
     if (paymentRes.data.success) {
       alert("Payment successful! Order status updated to Paid.");
+        dispatch(clearCart());
       navigate("/body/myOrders");
     } else {
       alert("Payment failed. Try again.");
@@ -74,12 +77,19 @@ const handleCheckOut=async ()=>{
   }
 
 }
+    const clearCartClick=()=>{
+      dispatch(clearCart());
+    }
 
 
 
   return (
-    <div className="pt-24 ml-64 p-8 bg-gradient-to-r from-red-50 via-orange-50 to-yellow-50 min-h-screen">
+    <div className="pt-16 ml-64 p-8 bg-gradient-to-r from-red-50 via-orange-50 to-yellow-50 min-h-screen">
+       <div className="flex justify-end">
+         <h3 className="text-red-600 font-bold cursor-pointer" onClick={clearCartClick}>Clear Cart</h3>
+      </div>
       <h1 className="text-2xl font-bold mb-6">Your Cart</h1>
+
       {(cart.length === 0) && <img alt="cartLogo" className="px-60" 
       src="https://qrstore.in/home_assets/img/empty-cart.png"/>}
 

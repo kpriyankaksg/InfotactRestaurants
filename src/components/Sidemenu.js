@@ -35,21 +35,34 @@ const handleLogout=()=>{
           </Link>
         </li>
          
-        <li>
+       
          {userDetails?.user?.role === "Partner" ? (
+          <>
+          <li>
            <Link
             to="menu"
             className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition" >
             <span>📱</span> <span>Menu</span>
           </Link>
+          </li>
+
+           <li>
+           <Link
+            to="recentOrders"
+            className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition" >
+            <span>📱</span> <span>Recent Orders</span>
+          </Link>
+          </li>
+          </>
+          
         ) : (
-        
+           <li>
           <Link to="myOrders" className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition">
           <span>📋</span> <span>My Orders</span>
           </Link>
-        
+          </li>
         )}
-        </li>
+      
 
         <li>
         <Link

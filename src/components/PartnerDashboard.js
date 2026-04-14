@@ -106,7 +106,21 @@ const PartnerDashboard = () => {
         console.log("response.data"+response.data);
         dispatch(setRestaurant(response.data));
         setSelectedRestaurantId(response.data._id);
-      } else {
+
+      // ✅ Pre-fill form fields from DB
+      setRestaurants({
+        name: response.data.name || "",
+        address: response.data.address || "",
+        postalCode: response.data.postalCode || "",
+        lat: response.data.lat || "",
+        lon: response.data.lon || "",
+      });
+
+      // ✅ Pre-fill latLong state so coordinates show up
+      if (response.data.lat && response.data.lon) {
+        setLatLong({ lat: response.data.lat, lon: response.data.lon });
+      }
+    } else {
         // No restaurant found → navigate to Contact Us
         alert("Please provide your restaurant details first.");
         //navigate("contactUs"); // replace with your actual route
@@ -190,7 +204,7 @@ const PartnerDashboard = () => {
       <input
         className="w-full p-3 border rounded"
         placeholder="Restaurant Name"
-        value={userDetails.user.restaurantName}
+        value={restaurants.name}
         onChange={(e) => setRestaurants({ ...restaurants, name: e.target.value })}
       />
       <input

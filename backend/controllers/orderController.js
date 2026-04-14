@@ -12,6 +12,12 @@ export const createOrder = async (req, res) => {
       status: "Pending"
     });
     await order.save();
+    //extra...........
+     // Broadcast to all connected merchants
+    const io = req.app.get("io");
+    console.log("Emitting newOrder for:", order._id);
+    io.emit("newOrder", order);
+//................................
     res.status(201).json(order);
   } catch (err) {
     console.error("Error creating order:", err);
@@ -46,6 +52,39 @@ export const getUserOrders = async (req, res) => {
   } catch (err) {
     console.error("Error fetching user orders:", err); // ⭐ log full error
     res.status(500).json({ message: "Error fetching user orders", error: err.message });
+  }
+};
+
+//......extra...........
+// Get daily revenue for a restaurant
+export const getDailyRevenue = async (req, res) => {
+  try {
+    const { restaurantId } = req.params;
+
+    // Start of today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const revenue = await Order.aggregate([
+      {
+        $match: {
+          "restaurants.restaurantId": restaurantId, // match restaurant
+          status: "Paid",                           // only paid orders
+          createdAt: { $gte: today }                // only today
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: "$totalAmount" }
+        }
+      }
+    ]);
+
+    res.json({ dailyRevenue: revenue[0]?.total || 0 });
+  } catch (err) {
+    console.error("Error calculating revenue:", err);
+    res.status(500).json({ message: "Error calculating revenue", error: err.message });
   }
 };
 

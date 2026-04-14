@@ -35,11 +35,14 @@ const cartSlice = createSlice({
       if (!exists) {
         state.items.push(table);
       }
+    },
+    clearCart:(state)=>{
+      state.items=[];
     }
   }
 });
 
-export const { addCart, updateQuantity, reserveTableItem } = cartSlice.actions;
+export const { addCart, updateQuantity, reserveTableItem, clearCart } = cartSlice.actions;
 // Selector for cart count
 export const selectCartCount = (state) =>
   state.cart.items.reduce((total, item) => {

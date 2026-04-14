@@ -13,6 +13,7 @@ import MainContainer from './components/MainContainer';
 import Menu from './components/Menu';
 import MyOrders from './components/MyOrders';
 import Profile from "./components/Profile";
+import RecentOrders from './components/RecentOrders';
 import Register from "./components/Register";
 import Review from "./components/Review";
 import Tracking from "./components/Tracking";
@@ -80,6 +81,10 @@ const appRouter= createBrowserRouter([
        {
         path:"menu",
         element:<Menu />
+      },
+      {
+        path:"recentOrders",
+        element:<RecentOrders />
       },
       {
         path:"cart",

@@ -64,7 +64,10 @@ const CustomerResMenu = () => {
           {menuItems.map((item) => {
             const cartItem = cart.find((c) => c._id === item._id && c.type === "menu");
             return (
-              <li key={item._id} className="border p-2 rounded flex justify-between items-center">
+              <li key={item._id} className={`border p-3 rounded flex justify-between items-center 
+                                  ${!item.available ? "opacity-50 cursor-not-allowed" : ""}`} 
+                                   title={!item.available ? "Currently not being served" : ""}
+>
                 <div className="flex items-center gap-4">
                   <img className="w-20 h-20 rounded-xl" alt={item.itemName} src={item.image} />
                   <span className="text-sm font-medium">
