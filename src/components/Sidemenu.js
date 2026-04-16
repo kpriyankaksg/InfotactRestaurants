@@ -50,7 +50,7 @@ const handleLogout=()=>{
            <Link
             to="recentOrders"
             className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition" >
-            <span>📱</span> <span>Recent Orders</span>
+            <span>📋</span> <span>Recent Orders</span>
           </Link>
           </li>
           </>

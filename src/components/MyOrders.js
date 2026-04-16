@@ -73,7 +73,7 @@ const MyOrders = () => {
           )}
           
         {/* Track + Review buttons */}
-          <div className="py-2">
+          {/* <div className="py-2">
             <Link to={`/body/tracking` } 
             state={{
                     restaurantDetails: {
@@ -86,7 +86,23 @@ const MyOrders = () => {
             <button className="p-2 m-2 bg-green-700 text-white rounded-lg">
               Track Order
             </button>
-            </Link> 
+            </Link>  */}
+            {!resBlock.tables?.some(table => table.reservationDateTime) && (
+              <Link
+                to={`/body/tracking`}
+                state={{
+                  restaurantDetails: {
+                    name: resBlock.restaurantName || resBlock.restaurantId?.name,
+                    postalCode: resBlock.postalCode || resBlock.restaurantId?.postalCode,
+                    location: resBlock.restaurantId?.location?.coordinates // [lon, lat]
+                  }
+                }}
+              >
+                <button className="p-2 m-2 bg-green-700 text-white rounded-lg">
+                  Track Order
+                </button>
+              </Link>
+            )}
             <Link
               to={`/body/review`}
               state={{
@@ -99,7 +115,7 @@ const MyOrders = () => {
               Write Review & Get Points
             </Link>
           </div>
-        </div>
+       // </div>
           ))}
           </li>
             ))}

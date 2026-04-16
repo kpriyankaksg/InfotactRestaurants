@@ -42,6 +42,7 @@ Hospitality Platform
 38.Designed the my orders page for showing multiple restaurants.
 39.Implemented tracking order by providing order status and map.
 40.By using Websacket developed the RecentOrders page in that showing the today's incoming orders from the customers.
+41.Tracking updates.
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

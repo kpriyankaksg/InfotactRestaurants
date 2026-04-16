@@ -36,9 +36,9 @@ const RecentOrders = () => {
             <li key={order._id} className="border p-4 rounded bg-white shadow">
               <p><strong>Restaurant:</strong> {order.restaurants[0]?.restaurantId?.name}</p>
               {(order.restaurants[0].items).map((item)=>(
-                 <p><strong>Itmes:</strong> {item.itemName}</p>
+                 <p><strong>Itmes:</strong><strong className="text-red-600"> {item.itemName}</strong></p>
               ))}
-              <p><strong>Total:</strong> ₹{order.totalAmount}</p>
+              <p><strong>Total:</strong><strong className="text-red-600"> ₹{order.totalAmount}</strong></p>
               <p><strong>Status:</strong> {order.status}</p>
               <p><strong>Created At:</strong> {new Date(order.createdAt).toLocaleString()}</p>
             </li>
