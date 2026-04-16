@@ -23,19 +23,20 @@ const Tracking = () => {
 
     const statusInterval = setInterval(() => {
       setStatusIndex((prev) => (prev < statuses.length - 1 ? prev + 1 : prev));
-    }, 2000);
+    }, 4000);
 
     return () => clearInterval(statusInterval);
   }, []);
 
-  useEffect(() => {
+// 1. Setup map once
+useEffect(() => {
   if (!restaurantDetails?.location || !customerCoords) return;
 
   const [lon, lat] = restaurantDetails.location;
   const restaurantCoords = [lat, lon];
 
   if (mapRef.current) {
-    mapRef.current.remove(); 
+    mapRef.current.remove();
     mapRef.current = null;
   }
 
@@ -59,34 +60,53 @@ const Tracking = () => {
     color: "red",
   }).addTo(map);
 
-  // Bike marker
+  // Bike icon
   const bikeIcon = L.icon({
-    iconUrl: "https://cdn3d.iconscout.com/3d/premium/thumb/deliveryman-going-to-deliver-parcel-3d-icon-png-download-4466369.png",
+    iconUrl: "https://cdn-icons-png.flaticon.com/512/3681/3681701.png",
     iconSize: [48, 48],
     iconAnchor: [24, 24],
   });
 
+  // Save bike marker reference
   const bikeMarker = L.marker(restaurantCoords, { icon: bikeIcon }).addTo(map);
-
-  // Animate bike
-  let step = 0;
-  const totalSteps = 10; // smoother movement
-  const interval = setInterval(() => {
-    step++;
-    const latStep =
-      restaurantCoords[0] +
-      (customerCoords.lat - restaurantCoords[0]) * (step / totalSteps);
-    const lngStep =
-      restaurantCoords[1] +
-      (customerCoords.lng - restaurantCoords[1]) * (step / totalSteps);
-
-    bikeMarker.setLatLng([latStep, lngStep]);
-
-    if (step === totalSteps) clearInterval(interval);
-  }, 1000);
-
-  return () => clearInterval(interval);
+  mapRef.current.bikeMarker = bikeMarker;
 }, [restaurantDetails, customerCoords]);
+
+// 2. Animate bike when status changes
+useEffect(() => {
+  if (!mapRef.current?.bikeMarker || !customerCoords || !restaurantDetails?.location) return;
+
+  const bikeMarker = mapRef.current.bikeMarker;
+  const [lon, lat] = restaurantDetails.location;
+  const restaurantCoords = [lat, lon];
+
+  let interval;
+
+  if (statuses[statusIndex] === "On the way") {
+    let step = 0;
+    const totalSteps = 15;
+    interval = setInterval(() => {
+      step++;
+      const latStep =
+        restaurantCoords[0] +
+        (customerCoords.lat - restaurantCoords[0]) * (step / totalSteps);
+      const lngStep =
+        restaurantCoords[1] +
+        (customerCoords.lng - restaurantCoords[1]) * (step / totalSteps);
+
+      bikeMarker.setLatLng([latStep, lngStep]);
+
+      if (step === totalSteps) clearInterval(interval);
+    }, 1000);
+  }
+
+  if (statuses[statusIndex] === "Delivered") {
+    // Snap bike to customer location
+    bikeMarker.setLatLng([customerCoords.lat, customerCoords.lng]);
+      }
+
+      return () => clearInterval(interval);
+    }, [statusIndex, restaurantDetails, customerCoords]);
 
   // getting lat long based on postalcode
   const getCustomerLatLong = async () => {
