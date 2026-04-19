@@ -36,7 +36,7 @@ const handleLogout=()=>{
         </li>
          
        
-         {userDetails?.user?.role === "Partner" ? (
+         {userDetails?.user?.role === "Partner" && (
           <>
           <li>
            <Link
@@ -55,7 +55,8 @@ const handleLogout=()=>{
           </li>
           </>
           
-        ) : (
+        ) }
+          {userDetails?.user?.role === "Customer" && (
            <li>
           <Link to="myOrders" className="flex items-center space-x-3 hover:bg-white/20 px-4 py-2 rounded-lg transition">
           <span>📋</span> <span>My Orders</span>

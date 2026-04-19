@@ -64,6 +64,7 @@ app.use("/api/order", orderRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/items", itemRoutes);
+// app.use("/api/admin", adminRoutes);
 
 
 // MongoDB connection

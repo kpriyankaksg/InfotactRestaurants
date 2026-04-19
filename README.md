@@ -45,6 +45,7 @@ Hospitality Platform
 41.Tracking updates.
 42.Map and Tracking statuses modifications.
 43.Done the validation for login and signup page.
+44.Created Admin Dashboard
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

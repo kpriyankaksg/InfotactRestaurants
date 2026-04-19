@@ -1,5 +1,6 @@
+// import mongoose from "mongoose";
 
-const mongoose= require('mongoose');
+ const mongoose= require('mongoose');
 const restaurantsSchema= new mongoose.Schema({
   userId: {type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true}, 
    name: { type: String, required: true },
@@ -19,4 +20,6 @@ restaurantsSchema.index({ location: "2dsphere" });
 
 
 
-module.exports= mongoose.model("RestaurantsLists",restaurantsSchema);
+ module.exports= mongoose.model("RestaurantsLists",restaurantsSchema);
+// export default mongoose.models.RestaurantsLists || mongoose.model("RestaurantsLists", restaurantsSchema);
+

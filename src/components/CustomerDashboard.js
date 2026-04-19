@@ -19,19 +19,7 @@ const CustomerDashboard = () => {
       console.log("all restaurants", response.data);
     };
     fetchRestaurants();
-    // Serch 
-  //    if (searchQuery.trim() === "") {
-  //   setFilteredRestaurants(restaurants);
-  // } else if (searchQuery.toLowerCase() === "near me") {
-  //   // Example: filter by distance < 5km
-  //   setFilteredRestaurants(restaurants.filter(res => res.distance < 5000));
-  // } else {
-  //   setFilteredRestaurants(
-  //     restaurants.filter(res =>
-  //       res.name.toLowerCase().includes(searchQuery.toLowerCase())
-  //     )
-  //   );
-  // }
+  
   }, []);
 
   useEffect(() => {

@@ -55,8 +55,21 @@ const Head=()=>{
             <Link to="mainContainer" className="hover:text-yellow-200 transition">Home</Link>
           </li>
 
-
-         {userDetails?.user?.role === "Partner" ? (
+           {userDetails?.user?.role === "Partner" && (
+         <li>
+            <Link to="menu" className="hover:text-yellow-200 transition">Menu</Link>
+          </li>
+        )
+       }  
+        {userDetails?.user?.role === "Customer" && (
+          <li>
+            <Link to="/body/myOrders" className="hover:text-yellow-200 transition">My Orders</Link>
+          </li>
+        )
+       }  
+        
+      
+         {/* {userDetails?.user?.role === "Partner" ? (
          <li>
             <Link to="menu" className="hover:text-yellow-200 transition">Menu</Link>
           </li>
@@ -64,7 +77,7 @@ const Head=()=>{
          <li>
             <Link to="/body/myOrders" className="hover:text-yellow-200 transition">My Orders</Link>
           </li>
-        )}
+        )} */}
 
           <li>
             <Link to="contactUs" className="hover:text-yellow-200 transition">Contact Us</Link>
