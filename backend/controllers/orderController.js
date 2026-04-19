@@ -1,4 +1,5 @@
 
+import mongoose from "mongoose";
 import Order from "../models/order.js";
 
 export const createOrder = async (req, res) => {
@@ -55,7 +56,7 @@ export const getUserOrders = async (req, res) => {
   }
 };
 
-//......extra...........
+
 // Get daily revenue for a restaurant
 export const getDailyRevenue = async (req, res) => {
   try {
@@ -68,10 +69,11 @@ export const getDailyRevenue = async (req, res) => {
     const revenue = await Order.aggregate([
       {
         $match: {
-          "restaurants.restaurantId": restaurantId, // match restaurant
+          "restaurants.restaurantId": new mongoose.Types.ObjectId(restaurantId), // match restaurant
           status: "Paid",                           // only paid orders
           createdAt: { $gte: today }                // only today
         }
+        
       },
       {
         $group: {
@@ -80,6 +82,8 @@ export const getDailyRevenue = async (req, res) => {
         }
       }
     ]);
+    console.log("Matched orders:", revenue);
+
 
     res.json({ dailyRevenue: revenue[0]?.total || 0 });
   } catch (err) {
@@ -87,5 +91,31 @@ export const getDailyRevenue = async (req, res) => {
     res.status(500).json({ message: "Error calculating revenue", error: err.message });
   }
 };
+// get yesterday revenue
+export const getYesterdayRevenue = async (req, res) => {
+  try {
+    const { restaurantId } = req.params;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    const revenue = await Order.aggregate([
+      {
+        $match: {
+          "restaurants.restaurantId": new mongoose.Types.ObjectId(restaurantId),
+          status: "Paid",
+          createdAt: { $gte: yesterday, $lt: today }
+        }
+      },
+      { $group: { _id: null, total: { $sum: "$totalAmount" } } }
+    ]);
+
+    res.json({ yesterdayRevenue: revenue[0]?.total || 0 });
+  } catch (err) {
+    res.status(500).json({ message: "Error calculating yesterday's revenue" });
+  }
+};
+
 
 

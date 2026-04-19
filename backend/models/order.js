@@ -30,8 +30,8 @@ const orderSchema = new mongoose.Schema({
   totalAmount: { type: Number, required: true },
   deliveryFee: { type: Number, default: 99 },
   status: { type: String, enum: ["Pending", "Paid", "Cancelled"], default: "Pending" },
-  createdAt: { type: Date, default: Date.now }
-});
+  createdAt: { type: Date, default: Date.now },
+}, { timestamps: true });
 
 
 export default mongoose.model("Order", orderSchema);

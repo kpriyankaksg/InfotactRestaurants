@@ -32,18 +32,18 @@ const MyOrders = () => {
       ) : (
         <ul className="space-y-4">
         {orders.map((order) => (
-          <li key={order._id} className="border p-4 rounded">
+          <li key={order._id} className="border border-gray-400 p-4 rounded">
             <div className="flex justify-between">
-              <span className="font-semibold">Order #{order._id}</span>
-               <span className="font-bold">Total: ₹{order.totalAmount}</span>
+              <span className="font-semibold ">Order <span className="text-red-600">#{order._id}</span></span>
+               <span className="font-bold">Total:  <span className="text-red-600">₹{order.totalAmount}</span> </span>
               <span className={`font-bold ${order.status === "Paid" ? "text-green-600" : "text-yellow-600"}`}>
                 {order.status}
               </span>
             </div>
 
       {order.restaurants.map((resBlock, idx) => (
-        <div key={idx} className="mt-4 border-t pt-2">
-          <h3 className="font-medium text-red-600">
+        <div key={idx} className="mt-4 border-t border-gray-300 pt-2">
+          <h3 className="font-semibold  text-red-600">
           {resBlock.restaurantName || resBlock.restaurantId?.name}
           </h3>
 

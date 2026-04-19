@@ -1,23 +1,47 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { Latlong_ApiKey } from "../utils/constants";
 import { addMenuItem } from "../utils/menuItemsSlice";
 import { setRestaurant } from "../utils/restaurantSlice";
 import { addTable } from "../utils/tableSlice";
+import { setUser } from "../utils/userSlice";
 
 
 const PartnerDashboard = () => {
   const[latLong, setLatLong]=useState(null);
    const [menuItemsAdd, setMenuItemsAdd] = useState([]);
   const [selectedRestaurantId, setSelectedRestaurantId]=useState(null);
-  const Current_res_details= useSelector((appStore)=> appStore.restaurant.restaurant);
-  //console.log("Current_res_details...", Current_res_details);
+  const [errors, setErrors]= useState({});
+  // const Current_res_details= useSelector((appStore)=> appStore.restaurant.restaurant);
   const userDetails= useSelector((appStore)=> appStore.user.user);
-  //console.log("userDetails...", userDetails);
   const dispatch= useDispatch();
-  const navigate= useNavigate();
+  // const navigate= useNavigate();
+
+ const validateForm = () => {
+  const newErrors = {};
+
+  // if (!restaurants.name || restaurants.name.trim().length < 2)
+  //   newErrors.name = "Restaurant Name is Required";
+
+  if (!restaurants.address)
+    newErrors.address = "Address is Required";
+
+  if (!restaurants.postalCode)
+    newErrors.postalCode = "Postal Code is Required";
+  else if (!/^\d{4,10}$/.test(restaurants.postalCode))
+    newErrors.postalCode = "Postal Code must be Numeric";
+
+  if (!restaurants.lat || Math.abs(restaurants.lat) > 90)
+  newErrors.lat = "Latitude must be between -90 and 90";
+
+if (!restaurants.lon || Math.abs(restaurants.lon) > 180)
+  newErrors.lon = "Longitude must be between -180 and 180";
+
+
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+};
 
   
   
@@ -35,37 +59,42 @@ const PartnerDashboard = () => {
       lon: "",
     });
   
-    const getLatLong = async () => {
-     // const apiKey = geocodingAPIKey; // replace with your key
-      const fullAddress = `${restaurants.address} ${restaurants.postalCode}`;
-      console.log(fullAddress);
-     const apiKey = Latlong_ApiKey; // from signup
-     try{
-      const response = await fetch(
+  
+  const getLatLong = async () => {
+  const fullAddress = `${restaurants.address} ${restaurants.postalCode}`;
+  const apiKey = Latlong_ApiKey;
+
+  try {
+    const response = await fetch(
       `https://us1.locationiq.com/v1/search?key=${apiKey}&q=${encodeURIComponent(fullAddress)}&format=json`
     );
     const latlongresult = await response.json();
-  
+
     if (latlongresult.length > 0) {
       const { lat, lon } = latlongresult[0];
       console.log("Latitude:", lat, "Longitude:", lon);
-      setLatLong({lat, lon});
-      return { lat, lon };
+
+      // ✅ update both states
+      setLatLong({ lat, lon });
+      setRestaurants((prev) => ({
+        ...prev,
+        lat,
+        lon,
+      }));
     } else {
       throw new Error("No results found for this address");
     }
-     }
-     catch(err){
-       console.error("Geocoding failed:", err.message);
-    alert("Could not find coordinates. Please check the address spelling.");
-
-     }
-    
+  } catch (err) {
+    console.error("Error fetching coordinates:", err);
   }
+};
   
   // add restaurant
     const handleSubmit =async (e) => {
       e.preventDefault();
+    
+      if(!validateForm()) return;
+        console.log(restaurants.name, userDetails.user.restaurantName)
      console.log("Restaurant details",userDetails.user.id, userDetails.user.restaurantName, restaurants.address,restaurants.postalCode,   parseFloat(latLong.lat),  parseFloat(latLong.lon));
     //  location: { type: "Point", coordinates: [78.486671, 17.385044] }
       try{
@@ -85,6 +114,11 @@ const PartnerDashboard = () => {
        const RestaurantDetails = result.data;
              dispatch(setRestaurant(RestaurantDetails));
             // console.log(RestaurantDetails);
+                // dispatch(setUser({
+                //   ...userDetails.user,
+                //   restaurantName: RestaurantDetails.name
+                // }));
+
        alert("Restaurant Details Inserted Successfully.");
        getRestaurantDetailsDB();
     }
@@ -204,27 +238,33 @@ const PartnerDashboard = () => {
       <input
         className="w-full p-3 border rounded"
         placeholder="Restaurant Name"
-        value={restaurants.name}
+        value={userDetails.user.restaurantName} disabled
         onChange={(e) => setRestaurants({ ...restaurants, name: e.target.value })}
       />
+      {/* {errors.name && <p className="text-red-600 text-sm">{errors.name}</p>} */}
+
       <input
         className="w-full p-3 border rounded"
         placeholder="Address"
         value={restaurants.address}
         onChange={(e) => setRestaurants({ ...restaurants, address: e.target.value })}
       />
+       {errors.address && <p className="text-red-600 text-sm">{errors.address}</p>}
       <input
         className="w-full p-3 border rounded"
         placeholder="Postal Code"
         value={restaurants.postalCode}
         onChange={(e) => setRestaurants({ ...restaurants, postalCode: e.target.value })}
       /> 
+       {errors.postalCode && <p className="text-red-600 text-sm">{errors.postalCode}</p>}
       {latLong && (
         <div className="mt-4 p-4 bg-gray-100 rounded">
           <p><strong>Latitude:</strong> {latLong.lat}</p>
           <p><strong>Longitude:</strong> {latLong.lon}</p>
         </div>
       )}
+        {errors.lat && <p className="text-red-600 text-sm">{errors.lat}</p>}
+         {errors.lon && <p className="text-red-600 text-sm">{errors.lon}</p>}
         
        <button
         type="button"

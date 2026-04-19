@@ -8,11 +8,35 @@ import { setUser } from "../utils/userSlice";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+   const validateForm = () => {
+    const newErrors = {};
+
+    // Email validation
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Enter a valid email address";
+    }
+
+    // Password validation
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (validateForm()) {
     try {
       const response = await axios.post("http://localhost:5000/api/auth/login", {
         email, password
@@ -21,11 +45,6 @@ const Login = () => {
       const result = response.data;
       dispatch(setUser(result));
       console.log(result);
-      // localStorage.setItem("userName", result.user.name);
-      // localStorage.setItem("userEmail", result.user.email);
-      // localStorage.setItem("userRole", result.user.role);
-      // localStorage.setItem("userId", result.user.id);
-
       if (result.token) {
         localStorage.setItem("token", result.token);
         alert("Login Successfully.");
@@ -37,6 +56,7 @@ const Login = () => {
       alert("Invalid Credentials.");
       console.error(error.response?.data || error.message);
     }
+  }
   };
 
   return (
@@ -80,6 +100,7 @@ const Login = () => {
           <span className="absolute left-4 top-4 text-gray-400">
             📧
           </span>
+           {errors.email && <p className="text-red-600 text-sm">{errors.email}</p>}
         </div>
 
         <div className="relative m-2">
@@ -93,13 +114,14 @@ const Login = () => {
           <span className="absolute left-4 top-4 text-gray-400">
             🔒
           </span>
+           {errors.password && (
+          <p className="text-red-600 text-sm">{errors.password}</p>
+        )}
         </div>
-
         <button
           type="submit"
           className="m-2 p-4 bg-red-600 hover:bg-red-700 transition duration-300 text-white font-bold rounded-lg shadow-md"
-          onClick={handleSubmit}
-        >
+          onClick={handleSubmit} >
           Login
         </button>
 

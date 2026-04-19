@@ -1,5 +1,5 @@
 import express from "express";
-import { createOrder, getDailyRevenue, getOrder, getUserOrders } from "../controllers/orderController.js";
+import { createOrder, getDailyRevenue, getOrder, getUserOrders,getYesterdayRevenue } from "../controllers/orderController.js";
 
 const router = express.Router();
 
@@ -18,6 +18,7 @@ router.get("/:id", getOrder);
 //.......extra.........
 // New revenue route
 router.get("/revenue/:restaurantId", getDailyRevenue);
+router.get("/revenue/:restaurantId", getYesterdayRevenue);
 
 
 export default router;

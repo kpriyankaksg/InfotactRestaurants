@@ -7,7 +7,7 @@ import { setTable } from "../utils/tableSlice";
 
 
 const Menu = () => {
-  const [dailyRevenue, setDailyRevenue] = useState(0);
+  // const [dailyRevenue, setDailyRevenue] = useState(0);
   const dispatch = useDispatch();
   const Current_res_details = useSelector((appStore) => appStore.restaurant.restaurant );
   const menuItems = useSelector((appStore) => appStore.menuItems.menuItems);
@@ -41,20 +41,20 @@ const Menu = () => {
   return () => socket.disconnect();
 }, []);
 
-useEffect(() => {
-  const fetchRevenue = async () => {
-    try {
-      const res = await axios.get(
-        `http://localhost:5000/api/order/revenue/${Current_res_details._id}`
-      );
-      setDailyRevenue(res.data.dailyRevenue);
-    } catch (err) {
-      console.error("Error fetching revenue:", err.message);
-    }
-  };
+// useEffect(() => {
+//   const fetchRevenue = async () => {
+//     try {
+//       const res = await axios.get(
+//         `http://localhost:5000/api/order/revenue/${Current_res_details._id}`
+//       );
+//       setDailyRevenue(res.data.dailyRevenue);
+//     } catch (err) {
+//       console.error("Error fetching revenue:", err.message);
+//     }
+//   };
 
-  if (Current_res_details?._id) fetchRevenue();
-}, [Current_res_details]);
+//   if (Current_res_details?._id) fetchRevenue();
+// }, [Current_res_details]);
 
 
 //..........................................................
@@ -173,10 +173,10 @@ useEffect(() => {
             </ul>
           </section>
           {/* extraaa */}
-              <div className="bg-white p-4 rounded-lg shadow-md mt-6">
+              {/* <div className="bg-white p-4 rounded-lg shadow-md mt-6">
                <h3 className="font-semibold text-gray-700">Today's Revenue</h3>
               <p className="text-2xl font-bold text-green-600">₹{dailyRevenue}</p>
-            </div>
+            </div> */}
         </div>
         
       )}

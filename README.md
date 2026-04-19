@@ -44,6 +44,7 @@ Hospitality Platform
 40.By using Websacket developed the RecentOrders page in that showing the today's incoming orders from the customers.
 41.Tracking updates.
 42.Map and Tracking statuses modifications.
+43.Done the validation for login and signup page.
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

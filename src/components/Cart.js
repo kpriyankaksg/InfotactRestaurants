@@ -27,7 +27,7 @@ const groupedRestaurants = cart.reduce((acc, item) => {
   if (!acc[restaurantId]) {
     acc[restaurantId] = {
        restaurantId,
-       restaurantName: item.restaurantName,   // ⭐ include snapshot
+       restaurantName: item.selectedResName || item.restaurantName,
        postalCode: item.postalCode,
       items: [], tables: [] };
   }
@@ -39,6 +39,7 @@ const groupedRestaurants = cart.reduce((acc, item) => {
   return acc;
 }, {});
 const restaurantsArray = Object.values(groupedRestaurants);
+//console.log("restaurantsArray...", restaurantsArray);
 
 
 
@@ -93,7 +94,7 @@ const handleCheckOut=async ()=>{
       {(cart.length === 0) && <img alt="cartLogo" className="px-60" 
       src="https://qrstore.in/home_assets/img/empty-cart.png"/>}
 
-      <ul className="space-y-2">
+      {/* <ul className="space-y-2">
         {cart.map((item, idx) => (
           <li
             key={idx}
@@ -120,6 +121,41 @@ const handleCheckOut=async ()=>{
                 </ul>
               </div>
             )}
+          </li>
+        ))}
+      </ul> */}
+      {/* Grouped by restaurant */}
+      <ul className="space-y-2">
+        {restaurantsArray.map((resBlock, idx) => (
+          <li key={idx} className="border p-3 rounded">
+            <div>
+              {/* Show restaurant name once */}
+              <p className="text-xl font-semibold text-red-600">
+                Restaurant - {resBlock.restaurantName}
+              </p>
+
+              {/* Items */}
+              {resBlock.items.length > 0 && (
+                <ul className="ml-4 list-disc">
+                  {resBlock.items.map((item) => (
+                    <li key={item._id}>
+                      {item.itemName} - ₹{item.price} × {item.quantity}
+                    </li>
+                  ))}
+                </ul>
+              )}
+
+              {/* Tables */}
+              {resBlock.tables.length > 0 && (
+                <ul className="ml-4 list-disc">
+                  {resBlock.tables.map((table) => (
+                    <li key={table._id}>
+                      Reserved Table {table.tableNumber} (Capacity {table.capacity})
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
           </li>
         ))}
       </ul>
